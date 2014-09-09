@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/darkBlue"
+        >
+        <EditText
+            android:id = "@+id/urlEditText"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint = "Enter a URL here!"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:inputType="text"
+            android:imeOptions="actionGo"
+            android:layout_weight="0.7"
+
+            android:background="@color/white"
+
+            />
+        </LinearLayout>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:id = "@+id/theWebView"
+
+        android:background="@color/white"
+        android:layout_height="match_parent"></WebView>
+
+
+
+
+</LinearLayout>
