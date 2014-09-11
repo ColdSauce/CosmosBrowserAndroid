@@ -3,13 +3,11 @@ CosmosBrowserAndroid
 
 Cosmos Browser allows the user to connect to the internet through the use of SMS. No data or WiFi required.
 
-##How it works
+### How it works
 
-After a person inputs a url and presses "go", the app texts our Twilio backend. The backend takes the url, gets the HTML source of the website, minifies it, gets rid of the css and javascript, GZIPs it, encodes it in Base64, and sends the data as a SMS stream. The phone recieves this stream at 3 messages per second. 
+After a person inputs a url, our app texts our Twilio number which forwards the URL as a POST request to our Node.JS backend. The backend takes the url, gets the HTML source of the website, minifies it, gets rid of the css, javascript, and images, GZIP compresses it, encodes it in Base64, and sends the data as a series of SMS's. The phone recieves this stream at a rate of 3 messages per second, orders them, decompresses them, and displays the content.
 
-After the phone recieves this data, it decodes it from Base64, decompresses it, and renders it as live HTML on the app using a WebView.
-
-####[Design Guidelines To Follow While Working On This Project](https://google-styleguide.googlecode.com/svn/trunk/javaguide.html)
+[Design Guidelines](https://google-styleguide.googlecode.com/svn/trunk/javaguide.html)
 
 
 Contributer | Task
