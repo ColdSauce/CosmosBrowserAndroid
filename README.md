@@ -9,7 +9,7 @@ After a person inputs a url, our app texts our Twilio number which forwards the 
 
 ### Release plans
 
-We're working hard to get our first MVP release out as soon as possible. Our expected release date is sometime in the third week of November, and we'll be rapidly updating with new features.
+We're working hard to get our first MVP release out as soon as possible. We'll be rapidly updating with new features.
 
 [Design Guidelines](https://google-styleguide.googlecode.com/svn/trunk/javaguide.html)
 
