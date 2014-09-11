@@ -9,6 +9,9 @@ After a person inputs a url and presses "go", the app texts our Twilio backend. 
 
 After the phone recieves this data, it decodes it from Base64, decompresses it, and renders it as live HTML on the app using a WebView.
 
+####[Design Guidelines To Follow While Working On This Project](https://google-styleguide.googlecode.com/svn/trunk/javaguide.html)
+
+
 Contributer | Task
 --- | ---
 Stefan | Android
