@@ -7,7 +7,7 @@ Cosmos Browser allows the user to connect to the internet through the use of SMS
 
 ### How it works
 
-After a person inputs a url, our app texts our Twilio number which forwards the URL as a POST request to our Node.JS backend. The backend takes the url, gets the HTML source of the website, minifies it, gets rid of the css, javascript, and images, GZIP compresses it, encodes it in Base64, and sends the data as a series of SMS's. The phone recieves this stream at a rate of 3 messages per second, orders them, decompresses them, and displays the content.
+After a person inputs a url, our app texts our Twilio number which forwards the URL as a POST request to our Node.JS backend. The backend takes the url, gets the HTML source of the website, minifies it, gets rid of the css, javascript, and images, GZIP compresses it, encodes it in Base64, and sends the data as a series of SMSes. The phone recieves this stream at a rate of 3 messages per second, orders them, decompresses them, and displays the content.
 
 ### Release plans
 
