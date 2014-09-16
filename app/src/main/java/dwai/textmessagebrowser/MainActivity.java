@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
         //the following is an example web page stored locally.
 //        ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///android_asset/stuff/filename.html");
 
-        File file = new File("/android_asset/newtab.html");
+        File file = new File("android_asset/newtab.html");
         ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///" + file);
         //Need to text twilio
 
