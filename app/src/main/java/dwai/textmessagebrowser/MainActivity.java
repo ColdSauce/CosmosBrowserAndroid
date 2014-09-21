@@ -8,7 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.telephony.gsm.SmsMessage;
+import android.telephony.SmsMessage;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,15 @@ import java.lang.reflect.Method;
 public class MainActivity extends Activity {
     private static final String PHONE_NUMBER = "8443343982";
     private final String ROOT_HTML_FILE_NAME = "root.html";
-    private FullTextMessage fullTextMessage;
+    public static FullTextMessage fullTextMessage;
+    public static WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        webView = (WebView)findViewById(R.id.theWebView);
 
         //Sets the font for the whole layout.
         final Typeface mFont = Typeface.createFromAsset(getAssets(),
@@ -113,50 +117,5 @@ public class MainActivity extends Activity {
             }
         }
     }
-
-    public class SMSListener extends BroadcastReceiver {
-
-
-        private SharedPreferences preferences;
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
-
-            if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-                Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
-                SmsMessage[] msgs = null;
-                String msg_from;
-                if (bundle != null){
-                    //---retrieve the SMS message received---
-                    try{
-                        Object[] pdus = (Object[]) bundle.get("pdus");
-                        msgs = new SmsMessage[pdus.length];
-                        for(int i=0; i<msgs.length; i++){
-
-                            msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-
-                            msg_from = msgs[i].getOriginatingAddress();
-                            String msgBody = msgs[i].getMessageBody();
-                            String fullHTML = fullTextMessage.addText((msgBody));
-                            if(!fullHTML.equals("NOT LAST")){
-                                ((WebView)findViewById(R.id.theWebView)).loadDataWithBaseURL("",fullHTML,"text/html","UTF-8","");
-                            }
-                            //This, to my knowledge, gets rid of this text message.
-                            abortBroadcast();
-
-
-
-
-
-                        }
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
-
 
 }
