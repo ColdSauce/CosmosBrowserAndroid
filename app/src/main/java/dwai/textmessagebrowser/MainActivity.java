@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
 
     }
 
-    
+
 
 
     //The data is compressed using the GZIP compression algorithm

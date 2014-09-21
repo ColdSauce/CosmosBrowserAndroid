@@ -33,6 +33,7 @@ public class SMSListener extends BroadcastReceiver {
                             msg_from = msgs[i].getOriginatingAddress();
                             String msgBody = msgs[i].getMessageBody();
 
+
                         }
                     }catch(Exception e){
                         e.printStackTrace();
