@@ -1,41 +1,29 @@
 package dwai.textmessagebrowser;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.SmsManager;
-import android.util.Base64;
-import android.util.Log;
+import android.telephony.gsm.SmsMessage;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Method;
-
-import java.util.HashMap;
-
-import java.util.zip.GZIPInputStream;
 
 
 public class MainActivity extends Activity {
     private static final String PHONE_NUMBER = "8443343982";
-    private HashMap<Integer, String> htmlCode = new HashMap<Integer, String>();
     private final String ROOT_HTML_FILE_NAME = "root.html";
+    private FullTextMessage fullTextMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +36,6 @@ public class MainActivity extends Activity {
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
         MainActivity.setAppFont(mContainer, mFont, true);
-
-        //the following is an example web page stored locally.
-//        ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///android_asset/stuff/filename.html");
-
-//        File file = new File("android_asset/newtab.html");
-//        ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///" + file);
-        //Need to text twilio
 
         final EditText urlEditText =  (EditText) findViewById(R.id.urlEditText);
         urlEditText.setOnKeyListener(new View.OnKeyListener() {
@@ -76,9 +57,6 @@ public class MainActivity extends Activity {
 
 
 
-       //Need to render the data
-
-
     }
     private void textToTwilio(String whatToSend) throws Exception{
         String phone_Num = PHONE_NUMBER;
@@ -88,25 +66,6 @@ public class MainActivity extends Activity {
 
     }
 
-
-
-
-    //The data is compressed using the GZIP compression algorithm
-    //This method decompresses the data for use in the web browser.
-    public static String decompress(byte[] compressed) throws IOException {
-        final int BUFFER_SIZE = 32;
-        ByteArrayInputStream is = new ByteArrayInputStream(compressed);
-        GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
-        StringBuilder string = new StringBuilder();
-        byte[] data = new byte[BUFFER_SIZE];
-        int bytesRead;
-        while ((bytesRead = gis.read(data)) != -1) {
-            string.append(new String(data, 0, bytesRead));
-        }
-        gis.close();
-        is.close();
-        return string.toString();
-    }
 
     private void saveFile(String name, String content) {
         String filename = name;
@@ -150,6 +109,50 @@ public class MainActivity extends Activity {
                     mSetTypeface.invoke(mChild, mFont);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public class SMSListener extends BroadcastReceiver {
+
+
+        private SharedPreferences preferences;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+
+            if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
+                Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
+                SmsMessage[] msgs = null;
+                String msg_from;
+                if (bundle != null){
+                    //---retrieve the SMS message received---
+                    try{
+                        Object[] pdus = (Object[]) bundle.get("pdus");
+                        msgs = new SmsMessage[pdus.length];
+                        for(int i=0; i<msgs.length; i++){
+
+                            msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+
+                            msg_from = msgs[i].getOriginatingAddress();
+                            String msgBody = msgs[i].getMessageBody();
+                            String fullHTML = fullTextMessage.addText((msgBody));
+                            if(!fullHTML.equals("NOT LAST")){
+                                ((WebView)findViewById(R.id.theWebView)).loadDataWithBaseURL("",fullHTML,"text/html","UTF-8","");
+                            }
+                            //This, to my knowledge, gets rid of this text message.
+                            abortBroadcast();
+
+
+
+
+
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
