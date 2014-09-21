@@ -35,7 +35,7 @@ public class SMSListener extends BroadcastReceiver {
 
                         }
                     }catch(Exception e){
-//                            Log.d("Exception caught",e.getMessage());
+                        e.printStackTrace();
                     }
                 }
             }

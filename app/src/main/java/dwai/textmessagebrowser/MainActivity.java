@@ -88,66 +88,7 @@ public class MainActivity extends Activity {
 
     }
 
-    private void checkMessages(final int increments) {
-        //The following code checks text messages every 1 second.
-        final Handler mHandler = new Handler();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(increments);
-                        mHandler.post(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                String msgData = "";
-
-                                Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
-                                cursor.moveToFirst();
-
-                                do {
-                                    msgData = "";
-                                    if (cursor.getString(cursor.getColumnIndexOrThrow("address")).equals(PHONE_NUMBER)) {
-                                        msgData = cursor.getString(cursor.getColumnIndexOrThrow("body"));
-                                        //TODO: fix this so that it is hard to break
-                                        int orderNumber = Integer.parseInt(msgData.substring(0, msgData.indexOf(" ")));
-                                        htmlCode.put(orderNumber, msgData.substring(msgData.indexOf(" ")));
-                                    }
-                                } while (cursor.moveToNext());
-
-                                StringBuilder sb = new StringBuilder();
-                                String finalHTML = "";
-                                //Once the data has been saved from text messages 0...n
-                                //Then the code iterates through the HashMap and produces a full version of the HTML.
-                                for (String s : htmlCode.values()) {
-                                    sb.append(s);
-                                }
-                                //The data is sent to the phone encoded in Base64
-                                //The following code decodes that data
-                                byte[] data = Base64.decode(sb.toString(), Base64.DEFAULT);
-
-                                try {
-
-                                    String text = new String(data, "UTF-8");
-                                    //After it has been decoded, the data needs to be decompressed.
-                                    finalHTML = decompress(text.getBytes());
-                                } catch (Exception e) {
-                                    //TODO: fix gracefully.
-                                    e.printStackTrace();
-                                }
-                                saveFile(ROOT_HTML_FILE_NAME,finalHTML);
-                                ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///data/data/dwai.textmessagebrowser/files/" + ROOT_HTML_FILE_NAME);
-
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
+    
 
 
     //The data is compressed using the GZIP compression algorithm
