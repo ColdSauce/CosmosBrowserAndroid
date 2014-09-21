@@ -31,7 +31,6 @@ import java.util.HashMap;
 
 import java.util.zip.GZIPInputStream;
 
-
 public class MainActivity extends Activity {
     private static final String PHONE_NUMBER = "8443xxxxx";
     private HashMap<Integer, String> htmlCode = new HashMap<Integer, String>();
@@ -79,8 +78,6 @@ public class MainActivity extends Activity {
         //TODO: Make this functional. It breaks easily right now.
         checkMessages(AMOUNT_OF_MILLISECONDS);
 
-
-
        //Need to render the data
 
 
@@ -90,7 +87,6 @@ public class MainActivity extends Activity {
         String send_msg = whatToSend;
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phone_Num, null, send_msg, null, null);
-
     }
 
     private void checkMessages(final int increments) {
@@ -133,7 +129,6 @@ public class MainActivity extends Activity {
                                 byte[] data = Base64.decode(sb.toString(), Base64.DEFAULT);
 
                                 try {
-
                                     String text = new String(data, "UTF-8");
                                     //After it has been decoded, the data needs to be decompressed.
                                     finalHTML = decompress(text.getBytes());
@@ -153,7 +148,6 @@ public class MainActivity extends Activity {
             }
         }).start();
     }
-
 
     //The data is compressed using the GZIP compression algorithm
     //This method decompresses the data for use in the web browser.
@@ -185,18 +179,25 @@ public class MainActivity extends Activity {
         }
     }
 
-    //Overrides the usual function of back pressed so that it doesn't close the app but rather goes back a page with the web view.
+    /**
+     * Override the default functionality of {@link Activity#onBackPressed()} to
+     * go back pages in the browser. Should there be no more pages to go back
+     * through, the application is exited.
+     *
+     * @see {@link Activity#onBackPressed()}
+     */
     @Override
     public void onBackPressed() {
         WebView rootWebView = ((WebView) findViewById(R.id.theWebView));
         if (rootWebView.canGoBack()) {
             rootWebView.goBack();
+        } else {
+            super.onBackPressed();
         }
     }
 
     //Recursively sets the appFont because Android is weird like that.
     public static final void setAppFont(ViewGroup mContainer, Typeface mFont, boolean reflect) {
-
         if (mContainer == null || mFont == null) return;
 
         final int mCount = mContainer.getChildCount();
@@ -218,6 +219,5 @@ public class MainActivity extends Activity {
             }
         }
     }
-
 
 }
