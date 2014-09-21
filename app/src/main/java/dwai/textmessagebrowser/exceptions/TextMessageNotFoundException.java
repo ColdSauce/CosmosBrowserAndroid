@@ -1,4 +1,4 @@
-package dwai.textmessagebrowser;
+package dwai.textmessagebrowser.exceptions;
 
 /**
  * Created by Stefan on 9/20/2014.

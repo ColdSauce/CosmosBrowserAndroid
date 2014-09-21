@@ -34,6 +34,7 @@ public class SMSListener extends BroadcastReceiver {
                             String msgBody = msgs[i].getMessageBody();
 
 
+
                         }
                     }catch(Exception e){
                         e.printStackTrace();
