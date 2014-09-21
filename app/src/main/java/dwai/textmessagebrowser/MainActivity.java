@@ -33,7 +33,7 @@ import java.util.zip.GZIPInputStream;
 
 
 public class MainActivity extends Activity {
-    private static final String PHONE_NUMBER = "8443xxxxx";
+    private static final String PHONE_NUMBER = "8443343982";
     private HashMap<Integer, String> htmlCode = new HashMap<Integer, String>();
     private final String ROOT_HTML_FILE_NAME = "root.html";
 
