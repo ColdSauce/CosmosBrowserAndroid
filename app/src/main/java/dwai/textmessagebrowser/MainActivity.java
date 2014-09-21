@@ -52,8 +52,8 @@ public class MainActivity extends Activity {
         //the following is an example web page stored locally.
 //        ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///android_asset/stuff/filename.html");
 
-        File file = new File("android_asset/newtab.html");
-        ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///" + file);
+//        File file = new File("android_asset/newtab.html");
+//        ((WebView) findViewById(R.id.theWebView)).loadUrl("file:///" + file);
         //Need to text twilio
 
         final EditText urlEditText =  (EditText) findViewById(R.id.urlEditText);
@@ -65,7 +65,6 @@ public class MainActivity extends Activity {
                         textToTwilio(urlEditText.getText().toString());
                     }
                     catch(Exception e){
-                        //TODO: Exit gracefully.
                         e.printStackTrace();
                     }
                     return true;
@@ -74,10 +73,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        //Need to get data back
-        final int AMOUNT_OF_MILLISECONDS = 1000;
-        //TODO: Make this functional. It breaks easily right now.
-        checkMessages(AMOUNT_OF_MILLISECONDS);
 
 
 
