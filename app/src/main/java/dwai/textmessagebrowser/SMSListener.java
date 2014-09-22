@@ -21,14 +21,9 @@ public class SMSListener extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-
-        Log.d("COSMOS", "STEFAN");
-
         // TODO Auto-generated method stub
 
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-
-            Log.d("COSMOS", "STEFAN");
 
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
             SmsMessage[] msgs = null;
@@ -44,8 +39,10 @@ public class SMSListener extends BroadcastReceiver {
 
                         msg_from = msgs[i].getOriginatingAddress();
                         String msgBody = msgs[i].getMessageBody();
-                        String fullHTML = MainActivity.fullTextMessage.addText((msgBody));
+                        //Log.d("COSMOS",msgBody);
+                        String fullHTML = MainActivity.fullTextMessage.addText(msgBody);
                         if(!fullHTML.equals("NOT LAST")){
+                            Log.d("COSMOS", fullHTML);
                             (MainActivity.webView).loadDataWithBaseURL("",fullHTML,"text/html","UTF-8","");
                         }
                         //This, to my knowledge, gets rid of this text message.

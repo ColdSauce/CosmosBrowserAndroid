@@ -1,6 +1,7 @@
 package dwai.textmessagebrowser;
 
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +22,7 @@ import dwai.textmessagebrowser.exceptions.TextMessageNotRecievedException;
  */
 public class FullTextMessage {
 
-    private ArrayList<String> texts = new ArrayList<String>();
+    public ArrayList<String> texts = new ArrayList<String>();
     private final int EVERYTHING_WORKED = -1;
 
     private int getWrongIndex(){
@@ -44,62 +45,50 @@ public class FullTextMessage {
 
     public String addText(String value) throws Exception {
         int currentTextMessageNum = getMessageNum(value);
-
-       for(int i = 1; i < texts.size();i++){
-           int cTextNum = getMessageNum(texts.get(i));
-           int prevtiousTextNum = getMessageNum(texts.get(i-1));
-           //Extreme cases
-           if(i == 1){
-               if(currentTextMessageNum < prevtiousTextNum){
-                   texts.add(0,value);
-               }
-           }
-           if(i == texts.size()){
-                if(currentTextMessageNum > currentTextMessageNum){
-                    texts.add(i,value);
-                }
-               if(texts.get(texts.size()).charAt(texts.get(texts.size()).length()) == '%'){
-                   //End of file
-                   //So basically how this works is the SMS Listener in the MainActivity calls this method when a new text message is sent.
-                   //
-                   if(basicIsComplete(currentTextMessageNum)){
-                       return getDecompressedMessages();
-                   }
-
-
-
-               }
-           }
-
-           if(currentTextMessageNum < cTextNum && currentTextMessageNum > prevtiousTextNum){
-               // In between the two
-               texts.add(i-1,value);
-           }
-
+        if(currentTextMessageNum > -1) {
+            texts.add(value);
+            return "NOT LAST";
+        } else {
+            texts.add(value);
+            return getDecompressedMessages();
         }
-        return "NOT LAST";
 
     }
     private int getMessageNum(String text){
-       int messageNum = Integer.parseInt(text.substring(0, text.indexOf("%")));
-       return messageNum;
+       Log.d("COSMOS", text);
+      if(text.charAt(text.lastIndexOf("%")) == (text.charAt(text.length()-1))){
+        return -1;
+      } else if(text.indexOf("%") > 0) {
+           Log.d("COSMOS", "TEXT:\t" + text.substring(0, text.indexOf("%")));
+           int messageNum = Integer.parseInt(text.substring(0, text.indexOf("%")));
+           Log.d("COSMOS", "\t.\n------------\nINT:\t" + messageNum + "\n------------");
+           return messageNum;
+       } else {
+          return -1;
+      }
+
     }
 
     private String getAllMessages() throws TextMessageNotRecievedException {
-        int wrongIndex = 0;
-        if((wrongIndex = getWrongIndex()) != EVERYTHING_WORKED){
-            throw new TextMessageNotRecievedException("Exception thrown because " + wrongIndex + " has not been recieved.");
-        }
+
+        Log.d("COSMOS", "getAllMessages() Called");
 
         String combinedHTML = "";
+        Log.d("COSMOS", "Texts:\t"+texts);
         for(String s : texts){
-            combinedHTML = getContentFromMessage(s);
+
+            Log.d("COSMOS","S:\t"+s+"\n");
+            if(s.indexOf("%") != s.length()-1)
+                combinedHTML+=getContentFromMessage(s.substring(s.indexOf("%")));
+            else
+                combinedHTML+=getContentFromMessage(s.substring(0,s.indexOf("%")));
+
         }
+
+        Log.d("COSMOS", "Combined HTML:\t"+combinedHTML);
+
         return combinedHTML;
-
-
     }
-
 
     private String decompress(byte[] compressed) throws IOException {
         final int BUFFER_SIZE = 32;
@@ -113,25 +102,18 @@ public class FullTextMessage {
         }
         gis.close();
         is.close();
+        Log.d("COSMOS", string.toString());
         return string.toString();
     }
 
     public String getDecompressedMessages(){
         String allData = getAllMessages();
-        byte[] data = Base64.decode(allData, Base64.DEFAULT);
-        String realHTML = "";
-        try{
-            realHTML = decompress(data);
-    }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        String data = new String(Base64.decode(allData, Base64.DEFAULT));
+
+        String realHTML = data;
+//        Log.d("COSMOS", ".\nREAL HTML:\n"+data);
 
         return realHTML;
-
-
-
-
     }
     public static void closeQuietly(InputStream is) {
         try {

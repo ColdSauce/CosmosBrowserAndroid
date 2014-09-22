@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
@@ -33,6 +34,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         webView = (WebView)findViewById(R.id.theWebView);
+        fullTextMessage = new FullTextMessage();
 
         //Sets the font for the whole layout.
         final Typeface mFont = Typeface.createFromAsset(getAssets(),
@@ -63,6 +65,7 @@ public class MainActivity extends Activity {
 
     }
     private void textToTwilio(String whatToSend) throws Exception{
+        fullTextMessage.texts = new ArrayList<String>();
         String phone_Num = PHONE_NUMBER;
         String send_msg = whatToSend;
         SmsManager sms = SmsManager.getDefault();
