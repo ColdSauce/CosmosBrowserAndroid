@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
-    private static final String PHONE_NUMBER = "8443343982";
+    private static final String PHONE_NUMBER = "<YOUR-TWILIO-PHONENUMBER>";
     private final String ROOT_HTML_FILE_NAME = "root.html";
     public static FullTextMessage fullTextMessage;
     public static WebView webView;

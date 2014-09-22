@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.zip.GZIPInputStream;
@@ -75,6 +76,7 @@ public class FullTextMessage {
 
         String combinedHTML = "";
         Log.d("COSMOS", "Texts:\t"+texts);
+        Collections.sort(texts);
         for(String s : texts){
 
             Log.d("COSMOS","S:\t"+s+"\n");
