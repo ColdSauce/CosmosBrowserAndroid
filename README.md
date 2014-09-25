@@ -18,7 +18,6 @@ We're working hard to get our first MVP release out as soon as possible. We'll b
 [Design Guidelines](https://google-styleguide.googlecode.com/svn/trunk/javaguide.html)
 
 
-
 Contributer | Task
 --- | ---
 Stefan | Android
