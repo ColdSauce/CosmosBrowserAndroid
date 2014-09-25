@@ -99,7 +99,7 @@ public class FullTextMessage {
         StringBuilder string = new StringBuilder();
         byte[] data = new byte[BUFFER_SIZE];
         int bytesRead;
-        while ((bytesRead = gis.read(data)) != -1) {
+        while ((bytesRead = gis.read()) != -1) {
             string.append(new String(data, 0, bytesRead));
         }
         gis.close();
@@ -110,8 +110,14 @@ public class FullTextMessage {
 
     public String getDecompressedMessages(){
         String allData = getAllMessages();
-        String data = new String(Base64.decode(allData, Base64.DEFAULT));
-
+        byte[] compressedData = (Base64.decode(allData, Base64.DEFAULT));
+        String data = "";
+        try{
+            data = decompress(compressedData);
+        }
+        catch(IOException e ){
+           e.printStackTrace();
+        }
         String realHTML = data;
 //        Log.d("COSMOS", ".\nREAL HTML:\n"+data);
 
