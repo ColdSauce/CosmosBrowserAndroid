@@ -43,7 +43,10 @@ public class SMSListener extends BroadcastReceiver {
                         String fullHTML = MainActivity.fullTextMessage.addText(msgBody);
                         if(!fullHTML.equals("NOT LAST")){
                             Log.d("COSMOS", fullHTML);
-                            (MainActivity.webView).loadDataWithBaseURL("",fullHTML,"text/html","UTF-8","");
+                            if(MainActivity.webView != null){
+                                (MainActivity.webView).loadDataWithBaseURL("",fullHTML,"text/html","UTF-8","");
+                            }
+
                         }
                         //This, to my knowledge, gets rid of this text message.
                         abortBroadcast();
