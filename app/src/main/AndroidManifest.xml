@@ -7,23 +7,19 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/NoActionBar" >
         <activity
-            android:windowSoftInputMode="stateHidden"
             android:name=".MainActivity"
-            android:label="@string/app_name" >
-
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
-
         <activity
             android:name=".SplashScreen"
-            android:label="@string/title_activity_splash_screen"
-            >
+            android:label="@string/title_activity_splash_screen" >
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,12 +27,18 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="dwai.textmessagebrowser.SMSListener" android:exported="true">
-            <intent-filter android:priority="2147483647">
+        <receiver
+            android:name=".SMSListener"
+            android:exported="true" >
+            <intent-filter android:priority="2147483647" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".InviteCodeActivity"
+            android:label="@string/title_activity_invite_code" >
+        </activity>
     </application>
 
 </manifest>

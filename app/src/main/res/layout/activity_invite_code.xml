@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue"
+    tools:context="dwai.textmessagebrowser.InviteCodeActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="60sp"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:background="@color/darkBlue"
+        android:ellipsize="middle"
+        android:id = "@+id/inviteCodeEditText"
+        android:singleLine="true"
+        android:hint="invite code"
+        android:imeActionLabel="Go!"
+        />
+
+</LinearLayout>
