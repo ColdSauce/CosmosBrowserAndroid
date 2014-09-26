@@ -93,24 +93,35 @@ public class FullTextMessage {
     }
 
     private String decompress(byte[] compressed) throws IOException {
-        final int BUFFER_SIZE = 32;
+        final int BUFFER_SIZE = compressed.length*2;
         ByteArrayInputStream is = new ByteArrayInputStream(compressed);
         GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
         StringBuilder string = new StringBuilder();
         byte[] data = new byte[BUFFER_SIZE];
         int bytesRead;
-        while ((bytesRead = gis.read()) != -1) {
-            string.append(new String(data, 0, bytesRead));
+        try {
+            while ((bytesRead = gis.read(data)) != -1) {
+                string.append(new String(data, 0, bytesRead));
+            }
         }
-        gis.close();
-        is.close();
-        Log.d("COSMOS", string.toString());
+        catch(Exception q){
+              Log.d("COSMOS",string.toString());
+             q.printStackTrace();
+
+        }
+        finally{
+            gis.close();
+            is.close();
+        }
+        Log.d("COSMOsdfsdfS", string.toString());
         return string.toString();
     }
 
     public String getDecompressedMessages(){
-        String allData = getAllMessages();
-        byte[] compressedData = (Base64.decode(allData, Base64.DEFAULT));
+//        String allData = getAllMessages();
+        //TODO: replace the test Base64 string with actual live data
+        byte[] compressedData = (Base64.decode("H4sIAAAAAAAAA5WTX0/CMBTFv0rTZ1lDJISQ0kQUQR+MITwQX0y3FVrpWmgvG3x77/gXMWLgZelud865/e2Wayis4KnPt4JHlYHxTnDdFFySzMoYexSrQQElOqhZj1rjFjGpVVQ8uIUBMpbuSzrOpOCsFjpZHqXa5LlyjViQw2oTKbrf1+4gw1xBj36mVroFPUqWa2sbVs1OgRpg2WUMNAYnsk5MjKeib/28ziR/WJ0Jq6pK5gb0Ok0yX7CdQ6BiaGC0Ti85/GwmmLn+3U1tCpUBUOGH6ycVk33xQAMPyhDHGZPSRJNaVUM5Lv+hchWDfdIVBpdZ6D2Lm5xuAcBOszXzHvcxpCX4SrzMyBKx4A7JgylVJFu/viNWAQlKRixrb3MCWuG7cTHhbIV/LDOgRF/h4BXGkeeA8TiYnO3qmIveKWbk5oQ9hQwhx0JaK/qTxy5p9sf5JAw7g+3k7f11My3V6qk96HwU02q0beXjdolN7z7nDH3weeyc7W8L212db7CoiktBAwAA", Base64.DEFAULT));
+        Log.d("other stuff", new String(compressedData));
         String data = "";
         try{
             data = decompress(compressedData);

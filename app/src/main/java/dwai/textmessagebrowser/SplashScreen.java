@@ -26,11 +26,10 @@ public class SplashScreen extends Activity {
                 android.R.id.content).getRootView();
         MainActivity.setAppFont(mContainer, mFont, true);
 
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreen.this, InviteCodeActivity.class);
+                Intent mainIntent = new Intent(SplashScreen.this, MainActivity.class);
                 SplashScreen.this.startActivity(mainIntent);
                 SplashScreen.this.finish();
             }

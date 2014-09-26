@@ -43,6 +43,9 @@ public class MainActivity extends Activity {
                 android.R.id.content).getRootView();
         MainActivity.setAppFont(mContainer, mFont, true);
 
+
+        (MainActivity.webView).loadDataWithBaseURL("",fullTextMessage.getDecompressedMessages(),"text/html","UTF-8","");
+
         final EditText urlEditText =  (EditText) findViewById(R.id.urlEditText);
         urlEditText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
