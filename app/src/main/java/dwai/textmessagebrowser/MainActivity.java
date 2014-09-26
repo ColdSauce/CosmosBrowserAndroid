@@ -44,7 +44,8 @@ public class MainActivity extends Activity {
         MainActivity.setAppFont(mContainer, mFont, true);
 
 
-        (MainActivity.webView).loadDataWithBaseURL("",fullTextMessage.getDecompressedMessages(),"text/html","UTF-8","");
+        //The following is for testing the getDecompressedMessages method..
+//        (MainActivity.webView).loadDataWithBaseURL("",fullTextMessage.getDecompressedMessages(),"text/html","UTF-8","");
 
         final EditText urlEditText =  (EditText) findViewById(R.id.urlEditText);
         urlEditText.setOnKeyListener(new View.OnKeyListener() {
