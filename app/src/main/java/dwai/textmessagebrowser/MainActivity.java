@@ -53,7 +53,19 @@ public class MainActivity extends Activity {
             }
         } ;
         webView.setWebViewClient(webViewClient);
-
+        webView.loadMarkdown("### New Window\n" +
+                " \n" +
+                "######Enter a valid url into the bar above. \n" +
+                " \n" +
+                "######Please note we're still in the early, beta, stages.\n" +
+                " \n" +
+                "######There will be bugs, that's the entire reason for us releasing so early.\n" +
+                " \n" +
+                "######Please report all bugs to bugs@cosmosbrowser.org\n" +
+                " \n" +
+                "######We can't handle huge websites just yet. We're working on better compression.\n" +
+                " \n" +
+                "######Hang tight!");
 
 
 
