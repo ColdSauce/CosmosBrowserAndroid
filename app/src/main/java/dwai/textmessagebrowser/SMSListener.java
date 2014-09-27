@@ -68,7 +68,7 @@ public class SMSListener extends BroadcastReceiver {
                     String fullHTML = MainActivity.fullTextMessage.getDecompressedMessages();
                     Log.d("COSMOS", "Full HTML:\t"+fullHTML);
                         if (MainActivity.webView != null) {
-                            (MainActivity.webView).loadMarkdown(fullHTML);
+                            (MainActivity.webView).loadMarkdown(fullHTML, "file:///android_asset/main.css");
                         }
                     }
 
