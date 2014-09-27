@@ -36,7 +36,6 @@ public class SMSListener extends BroadcastReceiver {
                     msgs = new SmsMessage[pdus.length];
                     for(int i=0; i<msgs.length; i++)
                     {
-
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
                         msg_from = msgs[i].getOriginatingAddress();

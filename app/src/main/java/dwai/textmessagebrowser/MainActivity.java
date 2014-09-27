@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
 
 
 
+
         //Sets the font for the whole layout.
         final Typeface mFont = Typeface.createFromAsset(getAssets(),
                 "fonts/proxima.ttf");
