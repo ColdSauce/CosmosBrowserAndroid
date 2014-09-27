@@ -1,8 +1,10 @@
 package dwai.textmessagebrowser;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,11 +91,17 @@ public class MainActivity extends Activity {
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     try {
                         fullTextMessage.texts.clear();
-                        if(urlEditText.getText().toString().length() > 3 && !urlEditText.getText().toString().contains(" ")) {
-                            if (urlEditText.getText().toString().substring(0, 7).equals("http://") || urlEditText.getText().toString().substring(0, 8).equals("https://"))
-                                textToTwilio(urlEditText.getText().toString());
+                        String urlText = urlEditText.getText().toString();
+                        if(!Patterns.WEB_URL.matcher(urlText).matches()){
+                            generateAlertDialog("URL is invalid! Please try again with the correct url.");
+                            return true;
+
+                        }
+                        if(urlText.length() > 3 && !urlText.contains(" ")) {
+                            if (urlText.substring(0, 7).equals("http://") || urlText.substring(0, 8).equals("https://"))
+                                textToTwilio(urlText);
                             else
-                                textToTwilio("http://" + urlEditText.getText().toString());
+                                textToTwilio("http://" + urlText);
                         } else {
                             Toast.makeText(getBaseContext(), "Please enter a valid URL!", Toast.LENGTH_SHORT).show();
                         }
@@ -123,7 +132,19 @@ public class MainActivity extends Activity {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(PHONE_NUMBER, null, send_msg, null, null);
     }
+    private void generateAlertDialog(String message){
+        new AlertDialog.Builder(this)
+                .setTitle("Error!")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
     private void saveFile(String name, String content) {
         String filename = name;
