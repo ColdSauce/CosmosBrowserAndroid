@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -69,9 +70,7 @@ public class MainActivity extends Activity {
                 " \n" +
                 "######We can't handle huge websites just yet. We're working on better compression.\n" +
                 " \n" +
-                "######Hang tight!");
-
-
+                "######Hang tight!", "file:///android_asset/main.css");
 
 
         //Sets the font for the whole layout.
