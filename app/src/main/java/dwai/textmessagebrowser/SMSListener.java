@@ -44,8 +44,9 @@ public class SMSListener extends BroadcastReceiver {
                         if(!msg_from.equals("+18443343982")){
                             return;
                         }
+
                         Toast.makeText(context,"Loading! Please wait!",
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_SHORT).show();
                         Log.d("stuff", msg_from);
                         String msgBody = msgs[i].getMessageBody();
                         Log.d("COSMOS", msgBody);

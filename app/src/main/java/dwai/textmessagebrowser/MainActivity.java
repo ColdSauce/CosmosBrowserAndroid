@@ -41,18 +41,15 @@ public class MainActivity extends Activity {
         WebViewClient webViewClient= new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView  view, String  url){
-                return true;
-            }
-            @Override
-            public void onLoadResource(WebView  view, String  url){
                 try {
+                    fullTextMessage.texts.clear();
+                    Log.d("COSMOS", "the url is " + url);
                     sendStringToTwilio(url);
                 }
                 catch(Exception e) {
                     e.printStackTrace();
                 }
-
-
+                return true;
             }
         } ;
         webView.setWebViewClient(webViewClient);
@@ -76,6 +73,7 @@ public class MainActivity extends Activity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     try {
+                        fullTextMessage.texts.clear();
                         if(urlEditText.getText().toString().substring(0,7).equals("http://"))
                             textToTwilio(urlEditText.getText().toString());
                         else
@@ -123,13 +121,13 @@ public class MainActivity extends Activity {
     }
 
     //Overrides the usual function of back pressed so that it doesn't close the app but rather goes back a page with the web view.
-    @Override
-    public void onBackPressed() {
-        WebView rootWebView = ((WebView) findViewById(R.id.theWebView));
-        if (rootWebView.canGoBack()) {
-            rootWebView.goBack();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        WebView rootWebView = ((WebView) findViewById(R.id.theWebView));
+//        if (rootWebView.canGoBack()) {
+//            rootWebView.goBack();
+//        }
+//    }
 
     //Recursively sets the appFont because Android is weird like that.
     public static final void setAppFont(ViewGroup mContainer, Typeface mFont, boolean reflect) {

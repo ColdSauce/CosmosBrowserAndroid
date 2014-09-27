@@ -44,6 +44,7 @@ public class FullTextMessage {
 
     public void addText(String value) throws Exception {
             texts.add(value);
+
     }
     private int getMessageNum(String text){
 //       Log.d("COSMOS", text);
