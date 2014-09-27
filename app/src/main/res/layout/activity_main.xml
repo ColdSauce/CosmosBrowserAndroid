@@ -18,6 +18,7 @@
             android:layout_marginRight="10dp"
             android:hint = "Enter a URL here!"
             android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:singleLine="true"
             android:inputType="text"
             android:imeOptions="actionGo"

@@ -17,6 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
@@ -75,10 +76,14 @@ public class MainActivity extends Activity {
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     try {
                         fullTextMessage.texts.clear();
-                        if(urlEditText.getText().toString().substring(0,7).equals("http://"))
-                            textToTwilio(urlEditText.getText().toString());
-                        else
-                            textToTwilio("http://"+urlEditText.getText().toString());
+                        if(urlEditText.getText().toString().length() > 3 && !urlEditText.getText().toString().contains(" ")) {
+                            if (urlEditText.getText().toString().substring(0, 7).equals("http://") || urlEditText.getText().toString().substring(0, 8).equals("https://"))
+                                textToTwilio(urlEditText.getText().toString());
+                            else
+                                textToTwilio("http://" + urlEditText.getText().toString());
+                        } else {
+                            Toast.makeText(getBaseContext(), "Please enter a valid URL!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     catch(Exception e){
                         e.printStackTrace();
