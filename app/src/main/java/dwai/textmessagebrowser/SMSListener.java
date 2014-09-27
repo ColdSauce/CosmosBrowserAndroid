@@ -14,7 +14,7 @@ import dwai.textmessagebrowser.R;
 public class SMSListener extends BroadcastReceiver {
 
 
-
+    private int streamSize;
 
     private SharedPreferences preferences;
 
@@ -33,24 +33,35 @@ public class SMSListener extends BroadcastReceiver {
                 try{
                     Object[] pdus = (Object[]) bundle.get("pdus");
                     msgs = new SmsMessage[pdus.length];
-                    for(int i=0; i<msgs.length; i++){
+                    for(int i=0; i<msgs.length; i++)
+                    {
 
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
                         msg_from = msgs[i].getOriginatingAddress();
                         String msgBody = msgs[i].getMessageBody();
-                        //Log.d("COSMOS",msgBody);
-                        String fullHTML = MainActivity.fullTextMessage.addText(msgBody);
-                        if(!fullHTML.equals("NOT LAST")){
-                            Log.d("COSMOS", fullHTML);
-                            if(MainActivity.webView != null){
-                                (MainActivity.webView).loadDataWithBaseURL("",fullHTML,"text/html","UTF-8","");
-                            }
-
-                        }
+                        Log.d("COSMOS", msgBody);
+                        streamSize = Integer.parseInt(msgBody.substring(msgBody.indexOf("*")+1,msgBody.length()-1));
+//                        Log.d("COSMOS", msgBody.substring(msgBody.indexOf("*")+1,msgBody.length()-1));
+//                        Log.d("COSMOS", msgBody.substring(0,msgBody.indexOf("%")));
+                        MainActivity.fullTextMessage.addText(msgBody);
                         //This, to my knowledge, gets rid of this text message.
-                        abortBroadcast();
                     }
+                    abortBroadcast();
+
+                    Log.d("COSMOS", "Texts-Size :\t"+MainActivity.fullTextMessage.texts.size());
+
+                    if(MainActivity.fullTextMessage.texts.size() == streamSize) {
+                        MainActivity.fullTextMessage.sortMessages();
+                    Log.d("COSMOS", "Texts ArrayList:\t"+MainActivity.fullTextMessage.texts.toString());
+
+                    String fullHTML = MainActivity.fullTextMessage.getDecompressedMessages();
+                    Log.d("COSMOS", "Full HTML:\t"+fullHTML);
+                        if (MainActivity.webView != null) {
+                            (MainActivity.webView).loadMarkdown(fullHTML);
+                        }
+                    }
+
                 }catch(Exception e){
                     e.printStackTrace();
                 }

@@ -28,12 +28,12 @@
             />
         </LinearLayout>
 
-    <WebView
+    <us.feras.mdv.MarkdownView
         android:layout_width="match_parent"
         android:id = "@+id/theWebView"
 
         android:background="@color/white"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent"/>
 
 
 

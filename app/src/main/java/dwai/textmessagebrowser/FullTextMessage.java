@@ -18,9 +18,7 @@ import java.util.zip.ZipInputStream;
 
 import dwai.textmessagebrowser.exceptions.TextMessageNotRecievedException;
 
-/**
- * Created by Stefan on 9/20/2014.
- */
+
 public class FullTextMessage {
 
     public ArrayList<String> texts = new ArrayList<String>();
@@ -44,25 +42,17 @@ public class FullTextMessage {
 
     }
 
-    public String addText(String value) throws Exception {
-        int currentTextMessageNum = getMessageNum(value);
-        if(currentTextMessageNum > -1) {
+    public void addText(String value) throws Exception {
             texts.add(value);
-            return "NOT LAST";
-        } else {
-            texts.add(value);
-            return getDecompressedMessages();
-        }
-
     }
     private int getMessageNum(String text){
-       Log.d("COSMOS", text);
-      if(text.charAt(text.lastIndexOf("%")) == (text.charAt(text.length()-1))){
+//       Log.d("COSMOS", text);
+      if(text.indexOf("*") > 0){
         return -1;
       } else if(text.indexOf("%") > 0) {
-           Log.d("COSMOS", "TEXT:\t" + text.substring(0, text.indexOf("%")));
+//           Log.d("COSMOS", "TEXT:\t" + text.substring(0, text.indexOf("%")));
            int messageNum = Integer.parseInt(text.substring(0, text.indexOf("%")));
-           Log.d("COSMOS", "\t.\n------------\nINT:\t" + messageNum + "\n------------");
+//           Log.d("COSMOS", "\t.\n------------\nINT:\t" + messageNum + "\n------------");
            return messageNum;
        } else {
           return -1;
@@ -72,18 +62,13 @@ public class FullTextMessage {
 
     private String getAllMessages() throws TextMessageNotRecievedException {
 
-        Log.d("COSMOS", "getAllMessages() Called");
+//        Log.d("COSMOS", "getAllMessages() Called");
 
         String combinedHTML = "";
-        Log.d("COSMOS", "Texts:\t"+texts);
-        Collections.sort(texts);
+//        Log.d("COSMOS", "Texts:\t"+texts);
         for(String s : texts){
 
-            Log.d("COSMOS","S:\t"+s+"\n");
-            if(s.indexOf("%") != s.length()-1)
-                combinedHTML+=getContentFromMessage(s.substring(s.indexOf("%")));
-            else
-                combinedHTML+=getContentFromMessage(s.substring(0,s.indexOf("%")));
+            combinedHTML+=s;
 
         }
 
@@ -105,7 +90,6 @@ public class FullTextMessage {
             }
         }
         catch(Exception q){
-              Log.d("COSMOS",string.toString());
              q.printStackTrace();
 
         }
@@ -113,12 +97,15 @@ public class FullTextMessage {
             gis.close();
             is.close();
         }
-        Log.d("COSMOsdfsdfS", string.toString());
+//        Log.d("COSMOS", string.toString());
         return string.toString();
     }
 
     public String getDecompressedMessages(){
         String allData = getAllMessages();
+        if(allData.indexOf("*") > 0) {
+            allData.substring(0, allData.indexOf("*"));
+        }
 //        byte[] compressedData = (Base64.decode("H4sIAAAAAAAAA5WTX0/CMBTFv0rTZ1lDJISQ0kQUQR+MITwQX0y3FVrpWmgvG3x77/gXMWLgZelud865/e2Wayis4KnPt4JHlYHxTnDdFFySzMoYexSrQQElOqhZj1rjFjGpVVQ8uIUBMpbuSzrOpOCsFjpZHqXa5LlyjViQw2oTKbrf1+4gw1xBj36mVroFPUqWa2sbVs1OgRpg2WUMNAYnsk5MjKeib/28ziR/WJ0Jq6pK5gb0Ok0yX7CdQ6BiaGC0Ti85/GwmmLn+3U1tCpUBUOGH6ycVk33xQAMPyhDHGZPSRJNaVUM5Lv+hchWDfdIVBpdZ6D2Lm5xuAcBOszXzHvcxpCX4SrzMyBKx4A7JgylVJFu/viNWAQlKRixrb3MCWuG7cTHhbIV/LDOgRF/h4BXGkeeA8TiYnO3qmIveKWbk5oQ9hQwhx0JaK/qTxy5p9sf5JAw7g+3k7f11My3V6qk96HwU02q0beXjdolN7z7nDH3weeyc7W8L212db7CoiktBAwAA", Base64.DEFAULT));
         byte[] compressedData = Base64.decode(allData, Base64.DEFAULT);
         String data = "";
@@ -157,8 +144,21 @@ public class FullTextMessage {
     }
 
 
+    public void sortMessages() {
+        Log.d("COSMOS", "Texts Size:\t"+texts.size());
+        String[] temp = new String [texts.size()];
+        for(String s: texts)
+        {
+            int index = Integer.parseInt(s.substring(0,s.indexOf("%")));
+            if(s.contains("*"))
+                temp[index] = s.substring(s.indexOf("%")+1, s.indexOf("*"));
+            else
+                temp[index] = s.substring(s.indexOf("%")+1);
+        }
 
-
-
-
+        for(int i=0;i<temp.length;i++)
+        {
+            texts.set(i,temp[i]);
+        }
+    }
 }

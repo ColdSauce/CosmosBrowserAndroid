@@ -21,19 +21,21 @@ import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import us.feras.mdv.MarkdownView;
+
 
 public class MainActivity extends Activity {
-    private final String PHONE_NUMBER = "<YOUR-TWILIO-PHONENUMBER>";
+    private final String PHONE_NUMBER = "8443343982";
     private final String ROOT_HTML_FILE_NAME = "root.html";
     public static FullTextMessage fullTextMessage;
-    public static WebView webView;
+    public static MarkdownView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        webView = (WebView)findViewById(R.id.theWebView);
+        webView = (MarkdownView)findViewById(R.id.theWebView);
         fullTextMessage = new FullTextMessage();
 
         //Sets the font for the whole layout.
@@ -41,8 +43,7 @@ public class MainActivity extends Activity {
                 "fonts/proxima.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        MainActivity.setAppFont(mContainer, mFont, true);
-
+//        MainActivity.setAppFont(mContainer, mFont, true);
 
         //The following is for testing the getDecompressedMessages method..
 //        (MainActivity.webView).loadDataWithBaseURL("",fullTextMessage.getDecompressedMessages(),"text/html","UTF-8","");
@@ -53,7 +54,10 @@ public class MainActivity extends Activity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     try {
-                        textToTwilio(urlEditText.getText().toString());
+                        if(urlEditText.getText().toString().substring(0,7).equals("http://"))
+                            textToTwilio(urlEditText.getText().toString());
+                        else
+                            textToTwilio("http://"+urlEditText.getText().toString());
                     }
                     catch(Exception e){
                         e.printStackTrace();

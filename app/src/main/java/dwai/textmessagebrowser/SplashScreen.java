@@ -24,7 +24,7 @@ public class SplashScreen extends Activity {
                 "fonts/proxima.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        MainActivity.setAppFont(mContainer, mFont, true);
+//        MainActivity.setAppFont(mContainer, mFont, true);
 
         new Handler().postDelayed(new Runnable() {
             @Override
