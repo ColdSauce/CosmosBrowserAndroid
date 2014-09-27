@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import dwai.textmessagebrowser.R;
 
@@ -39,6 +40,12 @@ public class SMSListener extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
                         msg_from = msgs[i].getOriginatingAddress();
+                        if(!msg_from.equals("+8443343982")){
+                            return;
+                        }
+                        Toast.makeText(context,"Loading. Please wait!",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("stuff", msg_from);
                         String msgBody = msgs[i].getMessageBody();
                         Log.d("COSMOS", msgBody);
                         streamSize = Integer.parseInt(msgBody.substring(msgBody.indexOf("*")+1,msgBody.length()-1));

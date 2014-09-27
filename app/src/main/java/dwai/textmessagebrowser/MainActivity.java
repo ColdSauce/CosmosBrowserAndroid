@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
                 "fonts/proxima.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-//        MainActivity.setAppFont(mContainer, mFont, true);
+        MainActivity.setAppFont(mContainer, mFont, true);
 
         //The following is for testing the getDecompressedMessages method..
 //        (MainActivity.webView).loadDataWithBaseURL("",fullTextMessage.getDecompressedMessages(),"text/html","UTF-8","");
