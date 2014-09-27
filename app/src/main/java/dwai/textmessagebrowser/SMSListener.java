@@ -40,11 +40,12 @@ public class SMSListener extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
                         msg_from = msgs[i].getOriginatingAddress();
-                        if(!msg_from.equals("+8443343982")){
+                        Log.d("stuff" , msg_from);
+                        if(!msg_from.equals("+18443343982")){
                             return;
                         }
-                        Toast.makeText(context,"Loading. Please wait!",
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Loading! Please wait!",
+                                Toast.LENGTH_LONG).show();
                         Log.d("stuff", msg_from);
                         String msgBody = msgs[i].getMessageBody();
                         Log.d("COSMOS", msgBody);

@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -37,6 +38,27 @@ public class MainActivity extends Activity {
 
         webView = (MarkdownView)findViewById(R.id.theWebView);
         fullTextMessage = new FullTextMessage();
+        WebViewClient webViewClient= new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView  view, String  url){
+                return true;
+            }
+            @Override
+            public void onLoadResource(WebView  view, String  url){
+                try {
+                    sendStringToTwilio(url);
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        } ;
+        webView.setWebViewClient(webViewClient);
+
+
+
 
         //Sets the font for the whole layout.
         final Typeface mFont = Typeface.createFromAsset(getAssets(),
@@ -79,6 +101,11 @@ public class MainActivity extends Activity {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phone_Num, null, send_msg, null, null);
 
+    }
+    private void sendStringToTwilio(String whatToSend){
+         String send_msg = whatToSend;
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(PHONE_NUMBER, null, send_msg, null, null);
     }
 
 
