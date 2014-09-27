@@ -41,6 +41,7 @@ public class SMSListener extends BroadcastReceiver {
                         msg_from = msgs[i].getOriginatingAddress();
                         Log.d("stuff" , msg_from);
                         if(!msg_from.equals("+18443343982")){
+
                             return;
                         }
 
@@ -54,8 +55,9 @@ public class SMSListener extends BroadcastReceiver {
 //                        Log.d("COSMOS", msgBody.substring(0,msgBody.indexOf("%")));
                         MainActivity.fullTextMessage.addText(msgBody);
                         //This, to my knowledge, gets rid of this text message.
+
+                        abortBroadcast();
                     }
-                    abortBroadcast();
 
                     Log.d("COSMOS", "Texts-Size :\t"+MainActivity.fullTextMessage.texts.size());
 
