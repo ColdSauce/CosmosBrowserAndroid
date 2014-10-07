@@ -20,7 +20,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:singleLine="true"
-            android:inputType="textWebEditText"
+            android:inputType="textUri"
             android:imeOptions="actionGo"
             android:layout_weight="0.7"
 

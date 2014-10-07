@@ -48,7 +48,6 @@ public class MainActivity extends Activity {
             public boolean shouldOverrideUrlLoading(WebView  view, String  url){
                 try {
                     fullTextMessage.texts.clear();
-                    Log.d("COSMOS", "the url is " + url);
                     sendStringToTwilio(url);
                 }
                 catch(Exception e) {
