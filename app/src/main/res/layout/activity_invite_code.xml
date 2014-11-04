@@ -1,11 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/lightBlue"
-    tools:context="dwai.textmessagebrowser.InviteCodeActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/lightBlue"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    <EditText
+              tools:context="dwai.textmessagebrowser.InviteCodeActivity">
+
+    <dwai.textmessagebrowser.views.CustomFontEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="60sp"
@@ -15,9 +17,10 @@
         android:textColorHint="@color/white"
         android:background="@color/darkBlue"
         android:ellipsize="middle"
-        android:id = "@+id/inviteCodeEditText"
+        android:id="@+id/inviteCodeEditText"
         android:singleLine="true"
         android:hint="invite code"
+        app:fontName="proxima.ttf"
         android:imeActionLabel="Go!"
         />
 
