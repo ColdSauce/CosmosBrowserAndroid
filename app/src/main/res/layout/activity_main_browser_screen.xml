@@ -1,0 +1,111 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="0dp"
+    tools:context="dwai.cosmosbrowser.MainBrowserScreen">
+
+    <include layout = "@layout/urlbar"
+        android:id = "@+id/urlBar"
+        />
+
+    <include layout = "@layout/bookmarks"/>
+    <include layout = "@layout/feedback"/>
+    <include layout = "@layout/find_in_page_view"/>
+
+
+    <dwai.cosmosbrowser.webkit.CosmosWebView
+
+
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/urlBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id = "@+id/rootWebView"
+
+        />
+    
+
+        <ListView
+
+            android:visibility="invisible"
+            android:background = "@drawable/abc_menu_dropdown_panel_holo_light"
+            android:layout_below="@+id/searchBar"
+            android:id = "@+id/tabsListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            </ListView>
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:visibility="gone"
+
+        android:layout_width="220dp"
+            android:background="@android:color/background_light"
+        android:id = "@+id/moreOptionsView"
+        android:layout_marginTop="5dp"
+
+        android:layout_marginBottom="170dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        >
+        <LinearLayout
+
+            android:id = "@+id/topSettingsBar"
+            android:layout_alignParentTop="true"
+            android:layout_width="220dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="50dp">
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="41dp"
+                android:scaleType="center"
+                android:src = "@drawable/ic_arrow_forward_black_24dp"
+                />
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="41dp"
+                android:scaleType="center"
+                android:src = "@drawable/ic_star_outline_black_24dp"
+
+                />
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="41dp"
+                android:scaleType="center"
+                android:src = "@drawable/ic_refresh_black_24dp"
+
+                />
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="41dp"
+                android:scaleType="center"
+                android:clickable="true"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="-2dp"
+                android:onClick="clickedSettings"
+                android:src="@drawable/ic_more_vert_black_24dp"
+
+                />
+            </LinearLayout>
+        
+        <dwai.cosmosbrowser.SettingsListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/topSettingsBar"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:id = "@+id/settingsListView"
+        />
+
+
+        </RelativeLayout>
+
+
+
+
+</RelativeLayout>

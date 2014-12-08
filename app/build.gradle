@@ -1,0 +1,33 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.0.0'
+    repositories {
+        mavenCentral()
+    }
+
+    defaultConfig {
+        applicationId "dwai.cosmosbrowser"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':blur-behind')
+    compile files('libs/listviewanimations_lib-core-slh.3.1.0.jar')
+    compile files('libs/listviewanimations_lib-core.3.1.0.jar')
+    compile files('libs/nineoldandroids-2.4.0.jar')
+    compile files('libs/butterknife-5.1.2.jar')
+    compile 'uk.co.ribot:easyadapter:1.2.0'
+}

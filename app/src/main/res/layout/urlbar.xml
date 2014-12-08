@@ -1,0 +1,48 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:background="#eaeaea"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:elevation="15dp"
+        android:id = "@+id/searchBar"
+        android:layout_height="50dp">
+
+        <EditText
+            android:id = "@+id/urlEditText"
+            android:fadingEdge="horizontal"
+            android:layout_width="0dp"
+            android:requiresFadingEdge="horizontal"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint = "Enter a URL here!"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:inputType="textWebEditText"
+            android:imeOptions="actionGo"
+            android:layout_weight="0.7"
+
+
+            />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src = "@drawable/ic_content_copy_black_24dp"
+            android:id = "@+id/tabsButton"
+            android:onClick="clickedTabs"
+            />
+        <ImageView
+            android:layout_width="50dp"
+            android:id = "@+id/moreSettingsButton"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:clickable="true"
+            android:src = "@drawable/ic_more_vert_black_24dp"
+            android:onClick="clickedSettings"
+            />
+        </LinearLayout>
+    </merge>

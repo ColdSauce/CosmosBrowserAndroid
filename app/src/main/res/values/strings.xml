@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cosmos Browser</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_instructions">InstructionsActivity</string>
+    <string name="title_activity_main_browser_screen">MainBrowserScreen</string>
+    <string name="title_activity_tabs_view">TabsView</string>
+
+</resources>

@@ -1,0 +1,34 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:visibility="gone"
+        android:background="#eaeaea"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:elevation="15dp"
+        android:id = "@+id/searchBar"
+        android:layout_height="50dp">
+
+        <EditText
+            android:id = "@+id/urlEditText"
+            android:fadingEdge="horizontal"
+            android:layout_width="0dp"
+            android:requiresFadingEdge="horizontal"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint = "Enter a valid search term here."
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:inputType="textWebEditText"
+            android:imeOptions="actionGo"
+            android:layout_weight="0.7"
+
+
+            />
+
+        </LinearLayout>
+
+</merge>
