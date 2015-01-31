@@ -20,11 +20,3 @@ We're working hard to get our first MVP release out as soon as possible. We'll b
 ### Contributing
 
 We are currently working on getting the browser completely decentralized such that a person can donate their phone in down time as a sort of "server". This is similar to how torrents work. We will have a centralized server that will track all of these donation phones and connect them to phones that require internet.
-
-Contributer | Task
---- | ---
-Stefan | Android
-Rohith | Backend
-Chen | Design
-Shreyas | Backend
-Justice | Android
