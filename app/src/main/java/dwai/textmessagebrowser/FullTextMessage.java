@@ -61,7 +61,7 @@ public class FullTextMessage {
 
     }
 
-    private String getAllMessages() throws TextMessageNotRecievedException {
+    public String getAllMessages() throws TextMessageNotRecievedException {
 
 //        Log.d("COSMOS", "getAllMessages() Called");
 
@@ -153,9 +153,9 @@ public class FullTextMessage {
         {
             int index = Integer.parseInt(s.substring(0,s.indexOf("%")));
             if(s.contains("*"))
-                temp[index] = s.substring(s.indexOf("%"), s.indexOf("*"));
+                temp[index] = s.substring(s.indexOf("%") + 1, s.indexOf("*"));
             else
-                temp[index] = s.substring(s.indexOf("%"));
+                temp[index] = s.substring(s.indexOf("%") + 1);
         }
 
         for(int i=0;i<temp.length;i++)
