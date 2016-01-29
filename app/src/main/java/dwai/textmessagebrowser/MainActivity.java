@@ -31,13 +31,14 @@ import us.feras.mdv.MarkdownView;
 
 
 public class MainActivity extends Activity {
-    private final String PHONE_NUMBER = "8443343982";
+    private final String PHONE_NUMBER = "+16123560899";
     private final String ROOT_HTML_FILE_NAME = "root.html";
     public static FullTextMessage fullTextMessage;
     public static MarkdownView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("COSMOS", "CREATED");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -95,11 +96,14 @@ public class MainActivity extends Activity {
                             return true;
 
                         }
+
                         if(urlText.length() > 3 && !urlText.contains(" ")) {
-                            if (urlText.substring(0, 7).equals("http://") || urlText.substring(0, 8).equals("https://"))
-                                textToTwilio(urlText);
-                            else
-                                textToTwilio("http://" + urlText);
+                            if (!(urlText.substring(0, 7).equals("http://") || urlText.substring(0, 8).equals("https://")))
+                                urlText = "http://" + urlText;
+                            urlText = "GET " + urlText;
+                            FullTextMessage request = new FullTextMessage(urlText);
+                            request.to = PHONE_NUMBER;
+                            request.send();
                         } else {
                             Toast.makeText(getBaseContext(), "Please enter a valid URL!", Toast.LENGTH_SHORT).show();
                         }
@@ -122,8 +126,8 @@ public class MainActivity extends Activity {
         String phone_Num = PHONE_NUMBER;
         String send_msg = whatToSend;
         SmsManager sms = SmsManager.getDefault();
+        Log.d("Text", "Texting " + whatToSend);
         sms.sendTextMessage(phone_Num, null, send_msg, null, null);
-
     }
     private void sendStringToTwilio(String whatToSend){
          String send_msg = whatToSend;

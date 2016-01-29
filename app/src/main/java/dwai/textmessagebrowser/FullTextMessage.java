@@ -1,5 +1,6 @@
 package dwai.textmessagebrowser;
 
+import android.telephony.SmsManager;
 import android.util.Base64;
 import android.util.Log;
 
@@ -7,14 +8,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import dwai.textmessagebrowser.exceptions.TextMessageNotRecievedException;
 
@@ -23,6 +19,43 @@ public class FullTextMessage {
 
     public ArrayList<String> texts = new ArrayList<String>();
     private final int EVERYTHING_WORKED = -1;
+    public String from;
+    public String to;
+
+    public FullTextMessage() {
+
+    }
+
+    public FullTextMessage(String message) {
+        try {
+            message = gzip(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        int size = message.length();
+        int totalLength = (int) Math.ceil(size / 130.0);
+        int i;
+        for (i = 0; i < size - 130; i += 130) {
+            texts.add((i / 130) + "%" + message.substring(i, i + 130) + "*" + totalLength + "?");
+        }
+        texts.add((i / 130) + "%" + message.substring(i) + "*" + totalLength + "?");
+    }
+
+    private String gzip(String message) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
+        gzipOutputStream.write(message.getBytes());
+        gzipOutputStream.close();
+        byte[] bytes = out.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
+    public void clear() {
+        texts.clear();
+        from = null;
+        to = null;
+    }
 
     private int getWrongIndex(){
         for(int i = 0; i < texts.size()-1;i++){
@@ -61,7 +94,7 @@ public class FullTextMessage {
 
     }
 
-    private String getAllMessages() throws TextMessageNotRecievedException {
+    public String getAllMessages() throws TextMessageNotRecievedException {
 
 //        Log.d("COSMOS", "getAllMessages() Called");
 
@@ -153,14 +186,19 @@ public class FullTextMessage {
         {
             int index = Integer.parseInt(s.substring(0,s.indexOf("%")));
             if(s.contains("*"))
-                temp[index] = s.substring(s.indexOf("%"), s.indexOf("*"));
+                temp[index] = s.substring(s.indexOf("%") + 1, s.indexOf("*"));
             else
-                temp[index] = s.substring(s.indexOf("%"));
+                temp[index] = s.substring(s.indexOf("%") + 1);
         }
 
         for(int i=0;i<temp.length;i++)
         {
             texts.set(i,temp[i]);
         }
+    }
+
+    public void send() {
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendMultipartTextMessage(to, null, texts, null, null);
     }
 }
