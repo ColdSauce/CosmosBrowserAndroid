@@ -24,8 +24,8 @@ public class SMSListener extends BroadcastReceiver {
 
     private SharedPreferences preferences;
 
-    private void loadWebpage() {
-        String fullHTML = MainActivity.fullTextMessage.getDecompressedMessages();
+    private void loadWebpage(FullTextMessage fullTextMessage) {
+        String fullHTML = fullTextMessage.getDecompressedMessages();
         Log.d("COSMOS", "Full HTML:\t" + fullHTML);
         if (MainActivity.webView != null) {
             (MainActivity.webView).loadMarkdown(fullHTML, "file:///android_asset/main.css");
@@ -43,11 +43,12 @@ public class SMSListener extends BroadcastReceiver {
         // TODO Auto-generated method stub
 
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
+            Log.d("COSMOS", "Received text");
             //Log.d("COSMOS", "Texts ArrayList:\t"+MainActivity.fullTextMessage.texts.toString());
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
             SmsMessage[] msgs = null;
             String msg_from = null;
-            FullTextMessage fullTextMessage = new FullTextMessage();
+            FullTextMessage message = null;
             if (bundle != null){
                 //---retrieve the SMS message received---
                 try{
@@ -64,30 +65,41 @@ public class SMSListener extends BroadcastReceiver {
                         //Toast.makeText(context,"Loading! Please wait!",
                         //        Toast.LENGTH_SHORT).show();
                         String msgBody = msgs[i].getMessageBody();
+                        int hash = Integer.parseInt(msgBody.substring(msgBody.indexOf('|') + 1));
+                        message = MainActivity.messages.get(hash);
+                        int textNum = Integer.parseInt(msgBody.substring(0, msgBody.indexOf('%')));
+                        if (message == null) {
+                            message = new FullTextMessage();
+                            MainActivity.messages.put(hash, message);
+                        }
+                        if (message.messageAt(textNum) != null) {
+                            Log.d("COSMOS", "Duplicate message");
+                            return;
+                        }
                         Log.d("COSMOS", "Adding message " + msgBody);
-                        streamSize = Integer.parseInt(msgBody.substring(msgBody.indexOf("*")+1,msgBody.indexOf('|')));
+                        streamSize = Integer.parseInt(msgBody.substring(msgBody.indexOf("*") + 1, msgBody.indexOf('|')));
                         Log.d("COSMOS", "StreamSize " + streamSize);
 //                        Log.d("COSMOS", msgBody.substring(0,msgBody.indexOf("%")));
-                        MainActivity.fullTextMessage.addText(msgBody);
+                        message.addText(msgBody);
                         //This, to my knowledge, gets rid of this text message.
                         abortBroadcast();
                     }
-                    Toast.makeText(context, "Received " + MainActivity.fullTextMessage.getSize() + "-part text", Toast.LENGTH_SHORT).show();
-                    Log.d("COSMOS", "Texts-Size :\t"+MainActivity.fullTextMessage.getSize());
-                    Log.d("COSMOS", "Texts ArrayList:\t"+MainActivity.fullTextMessage.toString());
-                    if(MainActivity.fullTextMessage.getSize() == streamSize) {
-                        MainActivity.fullTextMessage.sortMessages();
-                        Log.d("COSMOS", "Message stub " + MainActivity.fullTextMessage.getDecompressedMessages().substring(0, 8));
-                        if (MainActivity.fullTextMessage.getDecompressedMessages().substring(0, 8).equals("GET http")) {
-                            String request = MainActivity.fullTextMessage.getDecompressedMessages().substring(4);
-                            MainActivity.fullTextMessage.clear();
+                    Toast.makeText(context, "Received " + message.getSize() + "-part text", Toast.LENGTH_SHORT).show();
+                    Log.d("COSMOS", "Texts-Size :\t"+message.getSize());
+                    //Log.d("COSMOS", "Texts ArrayList:\t" + message.toString());
+                    if(message.getSize() == streamSize) {
+                        message.sortMessages();
+                        Log.d("COSMOS", "Message stub " + message.getDecompressedMessages().substring(0, 8));
+                        if (message.getDecompressedMessages().substring(0, 8).equals("GET http")) {
+                            String request = message.getDecompressedMessages().substring(4);
+                            message.clear();
                             if (msg_from == null) {
                                 Log.e("COSMOS", "No return address");
                                 return;
                             }
                             sendWebpage(request, msg_from);
                         } else {
-                            loadWebpage();
+                            loadWebpage(message);
                         }
                     }
 
@@ -126,7 +138,7 @@ public class SMSListener extends BroadcastReceiver {
             //style.remove();
             String strippedText = doc.toString().replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "\n");
             Log.d("COSMOS", "Site contents " + strippedText);
-            FullTextMessage output = new FullTextMessage(doc.toString(), request.hashCode());
+            FullTextMessage output = new FullTextMessage(doc.toString(), (request + "HTMLResponse").hashCode());
             output.to = to;
             output.send();
             return null;

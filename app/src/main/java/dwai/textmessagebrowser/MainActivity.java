@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,23 +27,23 @@ import us.feras.mdv.MarkdownView;
 public class MainActivity extends Activity {
     private final String PHONE_NUMBER = "+16123560899";
     private final String ROOT_HTML_FILE_NAME = "root.html";
-    public static FullTextMessage fullTextMessage;
+    //public static FullTextMessage fullTextMessage;
     public static MarkdownView webView;
+    public static SparseArray<FullTextMessage> messages; // Contains received HTMLs to be rendered
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("COSMOS", "CREATED");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        messages = new SparseArray<FullTextMessage>();
         webView = (MarkdownView)findViewById(R.id.theWebView);
-        fullTextMessage = new FullTextMessage();
         WebViewClient webViewClient= new WebViewClient(){
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String  url){
+            public boolean shouldOverrideUrlLoading(WebView view, String  url){ // Not sure what this method is
                 Log.d("COSMOS", "Override URL Loading, url " + url);
                 try {
-                    fullTextMessage.clear();
+                    //fullTextMessage.clear();
                     //sendStringToTwilio(url);
                 }
                 catch(Exception e) {
@@ -84,7 +85,7 @@ public class MainActivity extends Activity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     try {
-                        fullTextMessage.clear();
+                        //fullTextMessage.clear();
                         String urlText = urlEditText.getText().toString();
                         if(!Patterns.WEB_URL.matcher(urlText).matches()){
                             generateAlertDialog("URL is invalid! Please try again with the correct url.");
@@ -95,7 +96,7 @@ public class MainActivity extends Activity {
                         if(urlText.length() > 3 && !urlText.contains(" ")) {
                             if (!(urlText.substring(0, 7).equals("http://") || urlText.substring(0, 8).equals("https://")))
                                 urlText = "http://" + urlText;
-                            int hash = urlText.hashCode(); // TODO: convert to binary
+                            int hash = (urlText + "Request").hashCode(); // TODO: convert to binary
                             hash %= 1000;
                             urlText = "GET " + urlText;
                             FullTextMessage request = new FullTextMessage(urlText, hash);

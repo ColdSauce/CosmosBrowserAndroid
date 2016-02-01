@@ -211,6 +211,15 @@ public class FullTextMessage {
 
     }
 
+    public String messageAt(int index) {
+        for (int i = 0; i < texts.size(); i++) {
+            String text = texts.get(i);
+            if (index == Integer.parseInt(text.substring(0, text.indexOf('%')))) {
+                return text;
+            }
+        }
+        return null;
+    }
 
     public void sortMessages() {
         //Log.d("COSMOS", "Texts Size:\t"+texts.size());
