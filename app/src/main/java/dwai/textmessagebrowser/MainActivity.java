@@ -120,19 +120,18 @@ public class MainActivity extends Activity {
 
 
     }
-    private void textToTwilio(String whatToSend) throws Exception{
-        fullTextMessage.texts = new ArrayList<String>();
+    /*private void textToTwilio(String whatToSend) throws Exception{
         String phone_Num = PHONE_NUMBER;
         String send_msg = whatToSend;
         SmsManager sms = SmsManager.getDefault();
         Log.d("Text", "Texting " + whatToSend);
         sms.sendTextMessage(phone_Num, null, send_msg, null, null);
-    }
-    private void sendStringToTwilio(String whatToSend){
-         String send_msg = whatToSend;
+    }*/
+    /*private void sendStringToTwilio(String whatToSend){
+        String send_msg = whatToSend;
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(PHONE_NUMBER, null, send_msg, null, null);
-    }
+    }*/
     private void generateAlertDialog(String message){
         new AlertDialog.Builder(this)
                 .setTitle("Error!")
