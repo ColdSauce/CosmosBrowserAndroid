@@ -100,9 +100,12 @@ public class MainActivity extends Activity {
                         if(urlText.length() > 3 && !urlText.contains(" ")) {
                             if (!(urlText.substring(0, 7).equals("http://") || urlText.substring(0, 8).equals("https://")))
                                 urlText = "http://" + urlText;
+                            int hash = urlText.hashCode(); // TODO: convert to binary
+                            hash %= 1000;
                             urlText = "GET " + urlText;
-                            FullTextMessage request = new FullTextMessage(urlText);
+                            FullTextMessage request = new FullTextMessage(urlText, hash);
                             request.to = PHONE_NUMBER;
+                            //Log.d("COSMOS", "About to send");
                             request.send();
                         } else {
                             Toast.makeText(getBaseContext(), "Please enter a valid URL!", Toast.LENGTH_SHORT).show();
