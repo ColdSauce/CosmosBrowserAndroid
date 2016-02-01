@@ -17,13 +17,12 @@ import dwai.textmessagebrowser.exceptions.TextMessageNotRecievedException;
 
 public class FullTextMessage {
 
-    public ArrayList<String> texts = new ArrayList<String>();
+    private ArrayList<String> texts = new ArrayList<String>();
     private final int EVERYTHING_WORKED = -1;
     public String from;
     public String to;
 
     public FullTextMessage() {
-
     }
 
     public FullTextMessage(String message) {
@@ -45,6 +44,14 @@ public class FullTextMessage {
             texts.add((i / 130) + "%" + message.substring(i, i + 130) + "*" + totalLength + "|" + hash);
         }
         texts.add((i / 130) + "%" + message.substring(i) + "*" + totalLength + '|' + hash);
+    }
+
+    public int getSize() {
+        return texts.size();
+    }
+
+    public String toString() {
+        return texts.toString();
     }
 
     public void setHashCode(int hash) {

@@ -27,6 +27,7 @@
             android:background="@color/white"
 
             />
+
         </LinearLayout>
 
     <us.feras.mdv.MarkdownView
@@ -34,8 +35,6 @@
         android:id = "@+id/theWebView"
         android:background="@color/white"
         android:layout_height="match_parent"/>
-
-
 
 
 </LinearLayout>

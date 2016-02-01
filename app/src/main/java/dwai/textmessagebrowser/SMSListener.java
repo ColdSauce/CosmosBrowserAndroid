@@ -58,31 +58,29 @@ public class SMSListener extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
                         msg_from = msgs[i].getOriginatingAddress();
-                        Log.d("stuff", msg_from);
                         if(!msg_from.equals("+16123560899")){
-
                             return;
                         }
-                        Toast.makeText(context,"Loading! Please wait!",
-                                Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context,"Loading! Please wait!",
+                        //        Toast.LENGTH_SHORT).show();
                         String msgBody = msgs[i].getMessageBody();
-                        Log.d("COSMOS", msgBody);
-                        streamSize = Integer.parseInt(msgBody.substring(msgBody.indexOf("*")+1,msgBody.length()-1));
+                        Log.d("COSMOS", "Adding message " + msgBody);
+                        streamSize = Integer.parseInt(msgBody.substring(msgBody.indexOf("*")+1,msgBody.indexOf('|')));
                         Log.d("COSMOS", "StreamSize " + streamSize);
 //                        Log.d("COSMOS", msgBody.substring(0,msgBody.indexOf("%")));
                         MainActivity.fullTextMessage.addText(msgBody);
                         //This, to my knowledge, gets rid of this text message.
                         abortBroadcast();
                     }
-
-                    Log.d("COSMOS", "Texts-Size :\t"+MainActivity.fullTextMessage.texts.size());
-                    Log.d("COSMOS", "Texts ArrayList:\t"+MainActivity.fullTextMessage.texts.toString());
-                    if(MainActivity.fullTextMessage.texts.size() == streamSize) {
+                    Toast.makeText(context, "Received " + MainActivity.fullTextMessage.getSize() + "-part text", Toast.LENGTH_SHORT).show();
+                    Log.d("COSMOS", "Texts-Size :\t"+MainActivity.fullTextMessage.getSize());
+                    Log.d("COSMOS", "Texts ArrayList:\t"+MainActivity.fullTextMessage.toString());
+                    if(MainActivity.fullTextMessage.getSize() == streamSize) {
                         MainActivity.fullTextMessage.sortMessages();
                         Log.d("COSMOS", "Message stub " + MainActivity.fullTextMessage.getDecompressedMessages().substring(0, 8));
                         if (MainActivity.fullTextMessage.getDecompressedMessages().substring(0, 8).equals("GET http")) {
                             String request = MainActivity.fullTextMessage.getDecompressedMessages().substring(4);
-                            MainActivity.fullTextMessage.texts.clear();
+                            MainActivity.fullTextMessage.clear();
                             if (msg_from == null) {
                                 Log.e("COSMOS", "No return address");
                                 return;

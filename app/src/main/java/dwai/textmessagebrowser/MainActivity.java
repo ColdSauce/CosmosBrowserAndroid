@@ -46,10 +46,11 @@ public class MainActivity extends Activity {
         fullTextMessage = new FullTextMessage();
         WebViewClient webViewClient= new WebViewClient(){
             @Override
-            public boolean shouldOverrideUrlLoading(WebView  view, String  url){
+            public boolean shouldOverrideUrlLoading(WebView view, String  url){
+                Log.d("COSMOS", "Override URL Loading, url " + url);
                 try {
-                    fullTextMessage.texts.clear();
-                    sendStringToTwilio(url);
+                    fullTextMessage.clear();
+                    //sendStringToTwilio(url);
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -86,10 +87,11 @@ public class MainActivity extends Activity {
         final EditText urlEditText =  (EditText) findViewById(R.id.urlEditText);
         urlEditText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     try {
-                        fullTextMessage.texts.clear();
+                        fullTextMessage.clear();
                         String urlText = urlEditText.getText().toString();
                         if(!Patterns.WEB_URL.matcher(urlText).matches()){
                             generateAlertDialog("URL is invalid! Please try again with the correct url.");
@@ -116,6 +118,7 @@ public class MainActivity extends Activity {
                     }
                     return true;
                 }
+
                 return false;
             }
         });
