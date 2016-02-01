@@ -199,6 +199,8 @@ public class FullTextMessage {
 
     public void send() {
         SmsManager sms = SmsManager.getDefault();
-        sms.sendMultipartTextMessage(to, null, texts, null, null);
+        for (String text: texts) {
+            sms.sendTextMessage(to, null, text, null, null);
+        }
     }
 }
