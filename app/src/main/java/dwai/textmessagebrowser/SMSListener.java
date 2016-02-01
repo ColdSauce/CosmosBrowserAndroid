@@ -56,6 +56,11 @@ public class SMSListener extends BroadcastReceiver {
                     msgs = new SmsMessage[pdus.length];
                     for(int i=0; i<msgs.length; i++)
                     {
+                        if (i == 1) {
+                            Log.e("COSMOS", "Text message too large!");
+                            abortBroadcast();
+                            return;
+                        }
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
                         msg_from = msgs[i].getOriginatingAddress();

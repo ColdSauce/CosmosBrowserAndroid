@@ -242,8 +242,12 @@ public class FullTextMessage {
     public void send() {
         SmsManager sms = SmsManager.getDefault();
         Log.d("COSMOS", "Sending " + getAllMessages() + ", decoded to " + getDecompressedMessages());
+        int i = 0;
         for (String text: texts) {
+            Log.d("COSMOS", "Sending Message");
             sms.sendTextMessage(to, null, text, null, null);
+            i++;
         }
+        Log.d("COSMOS", "Messages sent: " + i);
     }
 }
