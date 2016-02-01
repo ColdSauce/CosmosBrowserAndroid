@@ -27,6 +27,11 @@ public class FullTextMessage {
     }
 
     public FullTextMessage(String message) {
+        this(message, 0);
+    }
+
+    public FullTextMessage(String message, int hash) {
+        hash %= 1000;
         try {
             message = gzip(message);
         } catch (IOException e) {
@@ -37,9 +42,21 @@ public class FullTextMessage {
         int totalLength = (int) Math.ceil(size / 130.0);
         int i;
         for (i = 0; i < size - 130; i += 130) {
-            texts.add((i / 130) + "%" + message.substring(i, i + 130) + "*" + totalLength + "?");
+            texts.add((i / 130) + "%" + message.substring(i, i + 130) + "*" + totalLength + "|" + hash);
         }
-        texts.add((i / 130) + "%" + message.substring(i) + "*" + totalLength + "?");
+        texts.add((i / 130) + "%" + message.substring(i) + "*" + totalLength + '|' + hash);
+    }
+
+    public void setHashCode(int hash) {
+        hash %= 1000;
+        for (String text: texts) {
+            int locationHash = text.indexOf('|');
+            if (locationHash >= 0) {
+                text = text.substring(0, locationHash);
+            }
+            text += "|";
+            text += hash;
+        }
     }
 
     private String gzip(String message) throws IOException {
@@ -94,19 +111,28 @@ public class FullTextMessage {
 
     }
 
+
     public String getAllMessages() throws TextMessageNotRecievedException {
 
 //        Log.d("COSMOS", "getAllMessages() Called");
 
         String combinedHTML = "";
 //        Log.d("COSMOS", "Texts:\t"+texts);
-        for(String s : texts){
-
-            combinedHTML+=s;
-
+        for(String s : texts) {
+            String other = s;
+            if (s.indexOf('%') >= 0) {
+                other = s.substring(s.indexOf('%'));
+            }
+            if (other.indexOf('|') >= 0) {
+                other = other.substring(0, other.indexOf('|'));
+            }
+            if (other.indexOf('*') >= 0) {
+                other = other.substring(0, other.indexOf('*'));
+            }
+            combinedHTML+=other;
         }
 
-        Log.d("COSMOS", "Combined HTML:\t"+combinedHTML);
+        //Log.d("COSMOS", "Combined HTML:\t"+combinedHTML);
 
         return combinedHTML;
     }
