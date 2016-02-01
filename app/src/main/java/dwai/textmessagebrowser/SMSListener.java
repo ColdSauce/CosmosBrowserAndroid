@@ -126,7 +126,7 @@ public class SMSListener extends BroadcastReceiver {
             //style.remove();
             String strippedText = doc.toString().replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "\n");
             Log.d("COSMOS", "Site contents " + strippedText);
-            FullTextMessage output = new FullTextMessage(strippedText);
+            FullTextMessage output = new FullTextMessage(doc.toString(), request.hashCode());
             output.to = to;
             output.send();
             return null;
