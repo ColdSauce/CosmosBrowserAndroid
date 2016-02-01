@@ -174,7 +174,7 @@ public class FullTextMessage {
             allData.substring(0, allData.indexOf("*"));
         }
 //        byte[] compressedData = (Base64.decode("H4sIAAAAAAAAA5WTX0/CMBTFv0rTZ1lDJISQ0kQUQR+MITwQX0y3FVrpWmgvG3x77/gXMWLgZelud865/e2Wayis4KnPt4JHlYHxTnDdFFySzMoYexSrQQElOqhZj1rjFjGpVVQ8uIUBMpbuSzrOpOCsFjpZHqXa5LlyjViQw2oTKbrf1+4gw1xBj36mVroFPUqWa2sbVs1OgRpg2WUMNAYnsk5MjKeib/28ziR/WJ0Jq6pK5gb0Ok0yX7CdQ6BiaGC0Ti85/GwmmLn+3U1tCpUBUOGH6ycVk33xQAMPyhDHGZPSRJNaVUM5Lv+hchWDfdIVBpdZ6D2Lm5xuAcBOszXzHvcxpCX4SrzMyBKx4A7JgylVJFu/viNWAQlKRixrb3MCWuG7cTHhbIV/LDOgRF/h4BXGkeeA8TiYnO3qmIveKWbk5oQ9hQwhx0JaK/qTxy5p9sf5JAw7g+3k7f11My3V6qk96HwU02q0beXjdolN7z7nDH3weeyc7W8L212db7CoiktBAwAA", Base64.DEFAULT));
-        Log.d("COSMOS", "all the data " + "***********1*" + allData + "*1*********");
+//        Log.d("COSMOS", "all the data " + "***********1*" + allData + "*1*********");
         byte[] compressedData = Base64.decode(allData, Base64.DEFAULT);
         String data = "";
         try{
@@ -213,7 +213,7 @@ public class FullTextMessage {
 
 
     public void sortMessages() {
-        Log.d("COSMOS", "Texts Size:\t"+texts.size());
+        //Log.d("COSMOS", "Texts Size:\t"+texts.size());
         String[] temp = new String [texts.size()];
         for(String s: texts)
         {
@@ -232,6 +232,7 @@ public class FullTextMessage {
 
     public void send() {
         SmsManager sms = SmsManager.getDefault();
+        Log.d("COSMOS", "Sending " + getAllMessages() + ", decoded to " + getDecompressedMessages());
         for (String text: texts) {
             sms.sendTextMessage(to, null, text, null, null);
         }

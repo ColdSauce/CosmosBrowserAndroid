@@ -2,15 +2,10 @@ package dwai.textmessagebrowser;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.telephony.SmsMessage;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -22,10 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 import us.feras.mdv.MarkdownView;
 
@@ -166,15 +159,6 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
     }
-
-    //Overrides the usual function of back pressed so that it doesn't close the app but rather goes back a page with the web view.
-//    @Override
-//    public void onBackPressed() {
-//        WebView rootWebView = ((WebView) findViewById(R.id.theWebView));
-//        if (rootWebView.canGoBack()) {
-//            rootWebView.goBack();
-//        }
-//    }
 
     //Recursively sets the appFont because Android is weird like that.
     public static final void setAppFont(ViewGroup mContainer, Typeface mFont, boolean reflect) {

@@ -43,7 +43,7 @@ public class SMSListener extends BroadcastReceiver {
         // TODO Auto-generated method stub
 
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-            Log.d("COSMOS", "Texts ArrayList:\t"+MainActivity.fullTextMessage.texts.toString());
+            //Log.d("COSMOS", "Texts ArrayList:\t"+MainActivity.fullTextMessage.texts.toString());
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
             SmsMessage[] msgs = null;
             String msg_from = null;
