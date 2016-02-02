@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dwai.textmessagebrowser" >
+    package="dwai.textmessagebrowser">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -12,40 +12,40 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/NoActionBar" >
+        android:theme="@style/NoActionBar">
         <service
             android:name=".PeerService"
-            android:exported="false"/>
+            android:exported="false" />
+
         <activity
-            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
             android:name=".SplashScreen"
-            android:label="@string/app_name" >
-            <intent-filter android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <receiver
             android:name=".SMSListener"
-            android:exported="true" >
-            <intent-filter android:priority="2147483647" >
+            android:exported="true">
+            <intent-filter android:priority="2147483647">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <activity
-
-            android:screenOrientation="portrait"
             android:name=".InviteCodeActivity"
-            android:label="@string/title_activity_invite_code" >
-        </activity>
+            android:label="@string/title_activity_invite_code"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".WebsiteSelectActivity"></activity>
     </application>
 
 </manifest>

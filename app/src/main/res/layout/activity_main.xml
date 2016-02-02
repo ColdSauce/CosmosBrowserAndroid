@@ -6,12 +6,13 @@
     tools:context=".MainActivity">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:background="@color/darkBlue"
+        android:orientation="vertical"
         >
         <EditText
             android:id = "@+id/urlEditText"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
@@ -19,22 +20,32 @@
             android:hint = "Enter a URL here!"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:paddingBottom="5dp"
             android:singleLine="true"
             android:inputType="textUri"
             android:imeOptions="actionGo"
-            android:layout_weight="0.7"
+            android:layout_weight="0.1"
 
             android:background="@color/white"
 
             />
+        <us.feras.mdv.MarkdownView
+            android:layout_width="match_parent"
+            android:id = "@+id/theWebView"
+            android:background="@color/white"
+            android:layout_height="300dp"
+            android:layout_weight="0.8"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="View my websites"
+            android:id="@+id/button"
+            android:layout_weight="0.1"
+            android:onClick="viewWebsites"/>
         </LinearLayout>
 
-    <us.feras.mdv.MarkdownView
-        android:layout_width="match_parent"
-        android:id = "@+id/theWebView"
-        android:background="@color/white"
-        android:layout_height="match_parent"/>
+
 
 
 </LinearLayout>

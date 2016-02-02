@@ -50,6 +50,30 @@ public class FullTextMessage {
         return texts.size();
     }
 
+    public int getTargetSize() {
+        if (getSize() == 0) {
+            return 0;
+        }
+        String message = texts.get(0);
+        try {
+            return Integer.parseInt(message.substring(message.indexOf('*') + 1, message.indexOf('|')));
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    public int getHash() {
+        if (getSize() == 0) {
+            return -1001;
+        }
+        String message = texts.get(0);
+        try {
+            return Integer.parseInt(message.substring(message.indexOf('|') + 1));
+        } catch (Exception e) {
+            return -1001;
+        }
+    }
+
     public String toString() {
         return texts.toString();
     }
