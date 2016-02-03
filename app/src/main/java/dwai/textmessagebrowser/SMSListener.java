@@ -64,12 +64,12 @@ public class SMSListener extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
                         msg_from = msgs[i].getOriginatingAddress();
-                        if(!msg_from.equals("+16123560899")){
-                            return;
-                        }
                         //Toast.makeText(context,"Loading! Please wait!",
                         //        Toast.LENGTH_SHORT).show();
                         String msgBody = msgs[i].getMessageBody();
+                        if (msgBody.indexOf('|') < 0 || msgBody.indexOf('%') < 0 || msgBody.indexOf('*') < 0) {
+                            return;
+                        }
                         int hash = Integer.parseInt(msgBody.substring(msgBody.indexOf('|') + 1));
                         message = MainActivity.messages.get(hash);
                         int textNum = Integer.parseInt(msgBody.substring(0, msgBody.indexOf('%')));
