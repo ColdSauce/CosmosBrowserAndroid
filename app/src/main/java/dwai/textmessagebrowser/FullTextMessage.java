@@ -30,7 +30,12 @@ public class FullTextMessage {
     }
 
     public FullTextMessage(String message, int hash) {
-        hash %= 1000;
+        Log.d("COSMOS", "Message " + message + "HASH " + hash);
+        while(hash < 0) {
+            hash += 1000;
+        }
+        hash %= 1000;  // Positive mod
+        Log.d("COSMOS", "Message " + message + "HASH " + hash);
         try {
             message = gzip(message);
         } catch (IOException e) {
@@ -79,7 +84,10 @@ public class FullTextMessage {
     }
 
     public void setHashCode(int hash) {
-        hash %= 1000;
+        while(hash < 0) {
+            hash += 1000;
+        }
+        hash %= 1000;  // Positive mod
         for (String text: texts) {
             int locationHash = text.indexOf('|');
             if (locationHash >= 0) {
@@ -124,8 +132,7 @@ public class FullTextMessage {
     }
 
     public void addText(String value) throws Exception {
-            texts.add(value);
-
+        texts.add(value);
     }
     private int getMessageNum(String text){
 //       Log.d("COSMOS", text);
@@ -152,7 +159,7 @@ public class FullTextMessage {
         for(String s : texts) {
             String other = s;
             if (s.indexOf('%') >= 0) {
-                other = s.substring(s.indexOf('%'));
+                other = s.substring(s.indexOf('%') + 1);
             }
             if (other.indexOf('|') >= 0) {
                 other = other.substring(0, other.indexOf('|'));
@@ -247,31 +254,41 @@ public class FullTextMessage {
 
     public void sortMessages() {
         //Log.d("COSMOS", "Texts Size:\t"+texts.size());
-        String[] temp = new String [texts.size()];
+        if (texts.size() < 1) {
+            Log.e("COSMOS", "Empty message, can't sort");
+            return;
+        }
+        String firstMessage = texts.get(0);
+        int size = Integer.parseInt(firstMessage.substring(firstMessage.indexOf('*') + 1, firstMessage.indexOf('|')));
+        String[] temp = new String [size];
         for(String s: texts)
         {
             int index = Integer.parseInt(s.substring(0,s.indexOf("%")));
-            if(s.contains("*"))
+            /*if(s.contains("*"))
                 temp[index] = s.substring(s.indexOf("%") + 1, s.indexOf("*"));
             else
-                temp[index] = s.substring(s.indexOf("%") + 1);
+                temp[index] = s.substring(s.indexOf("%") + 1);*/
+            temp[index] = s;
         }
-
+        texts.clear();
         for(int i=0;i<temp.length;i++)
         {
-            texts.set(i,temp[i]);
+            if (!temp[i].equals("")) {
+                texts.add(temp[i]);
+            }
         }
     }
 
     public void send() {
         SmsManager sms = SmsManager.getDefault();
-        Log.d("COSMOS", "Sending " + getAllMessages() + ", decoded to " + getDecompressedMessages());
-        int i = 0;
-        for (String text: texts) {
+        Log.d("COSMOS", "Sending " + getAllMessages() + " to " + to);
+        if (texts.size() > 0) { // Header and Footer are most important, should be sent first
             Log.d("COSMOS", "Sending Message");
-            sms.sendTextMessage(to, null, text, null, null);
-            i++;
+            sms.sendTextMessage(to, null, texts.get(texts.size() - 1), null, null);
         }
-        Log.d("COSMOS", "Messages sent: " + i);
+        for (int i = 0; i < texts.size() - 1; i++) {
+            Log.d("COSMOS", "Sending Message");
+            sms.sendTextMessage(to, null, texts.get(i), null, null);
+        }
     }
 }

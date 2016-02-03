@@ -48,6 +48,7 @@ public class SMSListener extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
             SmsMessage[] msgs = null;
             String msg_from = null;
+            boolean newMessage = false;
             FullTextMessage message = null;
             if (bundle != null){
                 //---retrieve the SMS message received---
@@ -74,11 +75,14 @@ public class SMSListener extends BroadcastReceiver {
                         message = MainActivity.messages.get(hash);
                         int textNum = Integer.parseInt(msgBody.substring(0, msgBody.indexOf('%')));
                         if (message == null) {
+                            newMessage = true;
                             message = new FullTextMessage();
                             MainActivity.messages.put(hash, message);
                         }
+
                         if (message.messageAt(textNum) != null) {
                             Log.d("COSMOS", "Duplicate message");
+                            abortBroadcast();
                             return;
                         }
                         Log.d("COSMOS", "Adding message " + msgBody);
@@ -86,9 +90,12 @@ public class SMSListener extends BroadcastReceiver {
                         Log.d("COSMOS", "StreamSize " + streamSize);
 //                        Log.d("COSMOS", msgBody.substring(0,msgBody.indexOf("%")));
                         message.addText(msgBody);
+
+                        MainActivity.messages.put(hash, message);
                         //This, to my knowledge, gets rid of this text message.
                         abortBroadcast();
                     }
+
                     Toast.makeText(context, "Received " + message.getSize() + "-part text", Toast.LENGTH_SHORT).show();
                     Log.d("COSMOS", "Texts-Size :\t"+message.getSize());
                     //Log.d("COSMOS", "Texts ArrayList:\t" + message.toString());
@@ -97,7 +104,6 @@ public class SMSListener extends BroadcastReceiver {
                         Log.d("COSMOS", "Message stub " + message.getDecompressedMessages().substring(0, 8));
                         if (message.getDecompressedMessages().substring(0, 8).equals("GET http")) {
                             String request = message.getDecompressedMessages().substring(4);
-                            message.clear();
                             if (msg_from == null) {
                                 Log.e("COSMOS", "No return address");
                                 return;

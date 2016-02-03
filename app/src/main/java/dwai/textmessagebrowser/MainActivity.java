@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
                             if (!(urlText.substring(0, 7).equals("http://") || urlText.substring(0, 8).equals("https://")))
                                 urlText = "http://" + urlText;
                             int hash = (urlText + "Request").hashCode(); // TODO: convert to binary
-                            hash %= 1000;
+                            hash = (hash + 1000) % 1000;
                             urlText = "GET " + urlText;
                             FullTextMessage request = new FullTextMessage(urlText, hash);
                             request.to = PHONE_NUMBER;
@@ -187,8 +187,16 @@ public class MainActivity extends Activity {
     }
 
     public void viewWebsites(View view) {
+        logMessages();
         Intent intent = new Intent(this, WebsiteSelectActivity.class);
         startActivity(intent);
+    }
+
+    public void logMessages() {
+        for (int j = 0; j < MainActivity.messages.size(); j++) {
+            int key = MainActivity.messages.keyAt(j);
+            Log.d("COSMOS", "Message: " + MainActivity.messages.get(key).toString());
+        }
     }
 
 }
