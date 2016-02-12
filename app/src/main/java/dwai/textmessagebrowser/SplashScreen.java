@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -16,6 +17,11 @@ public class SplashScreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            Log.d("COSMOS", "Splash screen empty bundle");
+        } else {
+            Log.d("COSMOS", "Splash screen received bundle");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 

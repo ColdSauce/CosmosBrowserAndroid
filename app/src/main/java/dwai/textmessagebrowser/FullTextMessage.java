@@ -1,5 +1,7 @@
 package dwai.textmessagebrowser;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.telephony.SmsManager;
 import android.util.Base64;
 import android.util.Log;
@@ -8,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -15,8 +18,8 @@ import java.util.zip.GZIPOutputStream;
 import dwai.textmessagebrowser.exceptions.TextMessageNotRecievedException;
 
 
-public class FullTextMessage {
-
+public class FullTextMessage implements Parcelable {
+    private static final long serialVersionUID = 100L;
     private ArrayList<String> texts = new ArrayList<String>();
     private final int EVERYTHING_WORKED = -1;
     public String from;
@@ -50,6 +53,24 @@ public class FullTextMessage {
         }
         texts.add((i / 130) + "%" + message.substring(i) + "*" + totalLength + '|' + hash);
     }
+
+    protected FullTextMessage(Parcel in) {
+        texts = in.createStringArrayList();
+        from = in.readString();
+        to = in.readString();
+    }
+
+    public static final Creator<FullTextMessage> CREATOR = new Creator<FullTextMessage>() {
+        @Override
+        public FullTextMessage createFromParcel(Parcel in) {
+            return new FullTextMessage(in);
+        }
+
+        @Override
+        public FullTextMessage[] newArray(int size) {
+            return new FullTextMessage[size];
+        }
+    };
 
     public int getSize() {
         return texts.size();
@@ -206,9 +227,10 @@ public class FullTextMessage {
         }
 //        byte[] compressedData = (Base64.decode("H4sIAAAAAAAAA5WTX0/CMBTFv0rTZ1lDJISQ0kQUQR+MITwQX0y3FVrpWmgvG3x77/gXMWLgZelud865/e2Wayis4KnPt4JHlYHxTnDdFFySzMoYexSrQQElOqhZj1rjFjGpVVQ8uIUBMpbuSzrOpOCsFjpZHqXa5LlyjViQw2oTKbrf1+4gw1xBj36mVroFPUqWa2sbVs1OgRpg2WUMNAYnsk5MjKeib/28ziR/WJ0Jq6pK5gb0Ok0yX7CdQ6BiaGC0Ti85/GwmmLn+3U1tCpUBUOGH6ycVk33xQAMPyhDHGZPSRJNaVUM5Lv+hchWDfdIVBpdZ6D2Lm5xuAcBOszXzHvcxpCX4SrzMyBKx4A7JgylVJFu/viNWAQlKRixrb3MCWuG7cTHhbIV/LDOgRF/h4BXGkeeA8TiYnO3qmIveKWbk5oQ9hQwhx0JaK/qTxy5p9sf5JAw7g+3k7f11My3V6qk96HwU02q0beXjdolN7z7nDH3weeyc7W8L212db7CoiktBAwAA", Base64.DEFAULT));
 //        Log.d("COSMOS", "all the data " + "***********1*" + allData + "*1*********");
-        byte[] compressedData = Base64.decode(allData, Base64.DEFAULT);
+        byte[] compressedData;
         String data = "";
         try{
+            compressedData = Base64.decode(allData, Base64.DEFAULT);
             data = decompress(compressedData);
         }
         catch(IOException e ){
@@ -290,5 +312,17 @@ public class FullTextMessage {
             Log.d("COSMOS", "Sending Message");
             sms.sendTextMessage(to, null, texts.get(i), null, null);
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeStringList(texts);
+        parcel.writeString(from);
+        parcel.writeString(to);
     }
 }

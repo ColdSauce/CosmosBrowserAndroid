@@ -27,9 +27,7 @@ public class SMSListener extends BroadcastReceiver {
     private void loadWebpage(FullTextMessage fullTextMessage) {
         String fullHTML = fullTextMessage.getDecompressedMessages();
         Log.d("COSMOS", "Full HTML:\t" + fullHTML);
-        if (MainActivity.webView != null) {
-            (MainActivity.webView).loadMarkdown(fullHTML, "file:///android_asset/main.css");
-        }
+        MainActivity.setWebView(fullHTML);
     }
 
     private void sendWebpage(String request, String to) throws IOException {
