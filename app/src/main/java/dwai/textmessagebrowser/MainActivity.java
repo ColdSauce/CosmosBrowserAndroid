@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.util.SparseArray;
@@ -34,7 +35,7 @@ import us.feras.mdv.MarkdownView;
 
 public class MainActivity extends Activity {
     private static final int SELECT_WEBSITE = 5;
-    private final String PHONE_NUMBER = "+16123560899";
+    private final String PHONE_NUMBER = "+16513832699";
     private final String ROOT_HTML_FILE_NAME = "root.html";
     private static MarkdownView webView;
     private static String webViewContent;
@@ -116,26 +117,19 @@ public class MainActivity extends Activity {
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     try {
                         //fullTextMessage.clear();
+                        boolean isUrl = true;
                         String urlText = urlEditText.getText().toString();
                         if (!Patterns.WEB_URL.matcher(urlText).matches()) {
-                            generateAlertDialog("URL is invalid! Please try again with the correct url.");
-                            return true;
-
+                            isUrl = false;
                         }
-
-                        if (urlText.length() > 3 && !urlText.contains(" ")) {
+                        if (isUrl) {
                             if (!(urlText.substring(0, 7).equals("http://") || urlText.substring(0, 8).equals("https://")))
                                 urlText = "http://" + urlText;
-                            int hash = (urlText + "Request").hashCode(); // TODO: convert to binary
-                            hash = (hash + 1000) % 1000;
-                            urlText = "GET " + urlText;
-                            FullTextMessage request = new FullTextMessage(urlText, hash);
-                            request.to = PHONE_NUMBER;
-                            //Log.d("COSMOS", "About to send");
-                            request.send();
-                        } else {
-                            Toast.makeText(getBaseContext(), "Please enter a valid URL!", Toast.LENGTH_SHORT).show();
+
                         }
+                        int hash = (urlText + "Request").hashCode(); // TODO: convert to binary
+                        hash = (hash + 1000) % 1000;
+                        textToTwilio(urlText);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -146,13 +140,13 @@ public class MainActivity extends Activity {
             }
         });
     }
-    /*private void textToTwilio(String whatToSend) throws Exception{
+    private void textToTwilio(String whatToSend) throws Exception{
         String phone_Num = PHONE_NUMBER;
         String send_msg = whatToSend;
         SmsManager sms = SmsManager.getDefault();
-        Log.d("Text", "Texting " + whatToSend);
+        Log.d("Text", "Texting " + whatToSend + ", hash: " + (whatToSend.hashCode() % 1000));
         sms.sendTextMessage(phone_Num, null, send_msg, null, null);
-    }*/
+    }
     /*private void sendStringToTwilio(String whatToSend){
         String send_msg = whatToSend;
         SmsManager sms = SmsManager.getDefault();

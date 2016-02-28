@@ -66,12 +66,16 @@ public class SMSListener extends BroadcastReceiver {
                         //Toast.makeText(context,"Loading! Please wait!",
                         //        Toast.LENGTH_SHORT).show();
                         String msgBody = msgs[i].getMessageBody();
-                        if (msgBody.indexOf('|') < 0 || msgBody.indexOf('%') < 0 || msgBody.indexOf('*') < 0) {
+                        if (msgBody.indexOf('<') < 0 ||
+                                msgBody.indexOf('|') < 0 ||
+                                msgBody.indexOf('%') < 0 ||
+                                msgBody.indexOf('*') < 0 ||
+                                msgBody.indexOf('}') < 0) {
                             return;
                         }
-                        int hash = Integer.parseInt(msgBody.substring(msgBody.indexOf('|') + 1));
+                        int hash = Integer.parseInt(msgBody.substring(msgBody.indexOf('|') + 1, msgBody.indexOf('}')));
                         message = MainActivity.messages.get(hash);
-                        int textNum = Integer.parseInt(msgBody.substring(0, msgBody.indexOf('%')));
+                        int textNum = Integer.parseInt(msgBody.substring(msgBody.indexOf('<') + 1, msgBody.indexOf('%')));
                         if (message == null) {
                             newMessage = true;
                             message = new FullTextMessage();

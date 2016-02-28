@@ -179,6 +179,9 @@ public class FullTextMessage implements Parcelable {
 //        Log.d("COSMOS", "Texts:\t"+texts);
         for(String s : texts) {
             String other = s;
+            if (s.indexOf('<') >= 0) {
+                other = s.substring(s.indexOf('<') + 1);
+            }
             if (s.indexOf('%') >= 0) {
                 other = s.substring(s.indexOf('%') + 1);
             }
@@ -267,7 +270,7 @@ public class FullTextMessage implements Parcelable {
     public String messageAt(int index) {
         for (int i = 0; i < texts.size(); i++) {
             String text = texts.get(i);
-            if (index == Integer.parseInt(text.substring(0, text.indexOf('%')))) {
+            if (index == Integer.parseInt(text.substring(text.indexOf('<') + 1, text.indexOf('%')))) {
                 return text;
             }
         }
@@ -285,7 +288,7 @@ public class FullTextMessage implements Parcelable {
         String[] temp = new String [size];
         for(String s: texts)
         {
-            int index = Integer.parseInt(s.substring(0,s.indexOf("%")));
+            int index = Integer.parseInt(s.substring(s.indexOf('<') + 1,s.indexOf("%")));
             /*if(s.contains("*"))
                 temp[index] = s.substring(s.indexOf("%") + 1, s.indexOf("*"));
             else
