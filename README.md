@@ -1,4 +1,4 @@
-This project has been deprecated. We are currently working on a better version of Cosmos Browser that will utilize a peer-to-peer  internet over SMS protocol that we will release soon. Please stay tuned.
+#This project has been deprecated. We are currently working on a better version of Cosmos Browser that will utilize a peer-to-peer  internet over SMS protocol that we will release soon. Please stay tuned.
 
 CosmosBrowserAndroid
 ====================
